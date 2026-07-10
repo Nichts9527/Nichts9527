@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <!-- 用<template>标签编写模版内容，需要添加id属性 -->
+    <template id='why'>
+        <div>
+            <h2>{{message}}</h2>
+            <h2>{{counter}}</h2>
+        </div>
+    </template>
+    <script src="./Vue.js源码/vue.js"></script>
+    <script>
+        Vue.createApp({
+            template: '#why',// 通过ID选择器选中<template id="why">...</template>模版
+            data: function () {
+                return {
+                    message: "使用template标签，优化计数器模版的编写",
+                    counter: 100
+                }
+            },
+            methods: {},
+        }).mount("#app")
+    </script>
+
+</body>
+
+</html>
