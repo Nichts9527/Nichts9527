@@ -1,16 +1,48 @@
-## Hi there 👋
+# 🧑‍💻 前端自学代码练习仓库
 
-<!--
-**Nichts9527/Nichts9527** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+> 记录我从前端小白到入门的学习足迹，包含原生 JavaScript 与 Vue 3 框架的实践代码。
 
-Here are some ideas to get you started:
+这个仓库是我的前端自学“实验室”，存放了我在学习 JavaScript 和 Vue 3 过程中亲手敲下的所有练习代码。它不是一个完整的项目，而是我拆解知识点、动手验证想法的地方。
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## 📚 仓库内容
+
+目前主要包含两大模块：
+
+### 1. JavaScript 基础与进阶
+涵盖核心语法、数据结构和常见手写题实现，用于夯实语言基础。
+
+- **基础语法**：变量、函数、数组与对象方法、闭包、原型链等。
+- **手写实现**：`call` / `apply` / `bind`、防抖节流、深拷贝、Promise 核心逻辑等。
+- **DOM 操作**：事件监听、元素增删改查、实现简易轮播图/选项卡等小交互。
+
+### 2. Vue 3 生态学习
+跟随官方文档和实战教程，记录从 Options API 到 Composition API 的过渡。
+
+- **核心特性**：组合式 API（setup）、响应式系统（ref / reactive）、生命周期钩子。
+- **路由与状态**：Vue Router 路由配置、导航守卫；Pinia 状态管理的基础使用。
+- **组件化**：自定义组件、组件通信（props / emit / provide / inject）、插槽应用。
+
+## 🛠️ 技术栈
+
+- **编程语言**：JavaScript (ES6+)
+- **前端框架**：Vue 3
+- **构建工具**：Vite (部分示例使用)
+- **代码风格**：Prettier + ESLint（个人配置）
+
+## 🚀 如何使用本项目
+
+由于这是零散的练习代码集合，你可以按需浏览：
+
+1.  **查看代码**：直接浏览 `JavaScript-practice/` 和 `Vue3-practice/` 目录下的文件。
+2.  **运行示例**：部分 Vue 3 示例是用 Vite 构建的，可以进入对应目录执行以下命令：
+    ```bash
+    # 进入某个 Vue 3 练习目录 (例如 Vue3-practice/vue-demo)
+    cd Vue3-practice/your-project-folder
+    npm install
+    npm run dev
+
+    📅 学习状态
+这是一个持续更新的仓库，我会随着学习进度不断添加新内容。如果你也在自学前端，欢迎参考或交流。
+
+⚠️ 注意
+这些代码是学习过程中的产物，部分实现可能并非最优解。我会持续重构和优化，欢迎提出宝贵建议！
