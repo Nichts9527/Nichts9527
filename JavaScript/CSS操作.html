@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #testdiv1{
+            position: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="testdiv1"></div>
+    <div id="testdiv2"></div>
+    <div id="testdiv3"></div>
+    <script>
+        var testdiv1 = document.getElementById("testdiv1")
+        testdiv1.style.width = "200px"
+        testdiv1.style.height = "200px"
+        testdiv1.style.backgroundColor = "red"
+
+        var testdiv2 = document.getElementById("testdiv2")
+        testdiv2.setAttribute("style", "height:300px;width:300px;background:blue;")
+
+        var testdiv3 = document.getElementById("testdiv3")
+        testdiv3.style.cssText ="height:400px;width:400px;background:green;"
+    </script>
+</body>
+
+</html>

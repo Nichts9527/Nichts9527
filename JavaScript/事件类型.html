@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .div1 {
+            height: 200px;
+            width: 200px;
+            background-color: red;
+            margin: 50px;
+        }
+
+        .div2 {
+            height: 300px;
+            width: 300px;
+            background-color: gray;
+            margin: 50px;
+        }
+
+        .div2 div {
+            height: 200px;
+            width: 200px;
+            background-color: red;
+        }
+
+        .div3 {
+            height: 300px;
+            width: 300px;
+            background-color: gray;
+            margin: 50px;
+        }
+
+        .div3 div {
+            height: 200px;
+            width: 200px;
+            background-color: red;
+        }
+
+        .div4 {
+            height: 300px;
+            width: 300px;
+            background-color: gray;
+            margin: 50px;
+        }
+
+        .div4 div {
+            height: 200px;
+            width: 200px;
+            background-color: red;
+        }
+
+        .div5 {
+            height: 300px;
+            width: 300px;
+            background-color: gray;
+            margin: 50px;
+        }
+
+        .div5 div {
+            height: 200px;
+            width: 200px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 鼠标在节点内部移动 -->
+    <div class="div1"></div>
+    <!--mouseenter 鼠标进入节点时触发，子节点不会触发 -->
+    <div class="div2">
+        <div class="container2"></div>
+    </div>
+    <!--mouseleave 鼠标离开节点时触发，离开父节点不会触发 -->
+    <div class="div3">
+        <div class="container3"></div>
+    </div>
+    <!--mouseover 鼠标进入节点时触发，子节点会触发 -->
+    <div class="div4">
+        <div class="container4"></div>
+    </div>
+    <!--mouseout 鼠标离开节点时触发,离开父节点会触发 -->
+    <div class="div5">
+        <div class="container5"></div>
+    </div>
+    <script>
+        // 鼠标在节点内部移动
+        var div1 = document.getElementsByClassName("div1")[0]
+        div1.addEventListener("mousemove", function (params) {
+            console.log("触发了");
+
+        })
+
+        // <!--mouseenter 鼠标进入节点时触发，子节点不会触发 -->
+        var div2 = document.getElementsByClassName("div2")[0]
+        div2.addEventListener("mouseenter", function name(params) {
+            console.log("触发了");
+        })
+
+        // <!--mouseleave 鼠标离开节点时触发，离开父节点不会触发 -->
+
+        var container3 = document.getElementsByClassName("container3")[0]
+        // container3.onmouseleave = function name(params) {
+        //     console.log("触发了");
+
+        // }
+        container3.addEventListener("mouseleave", function () {
+            console.log("触发了");
+        })
+
+        // <!--mouseover 鼠标进入节点时触发，子节点会触发 -->
+
+        var div4 = document.getElementsByClassName("div4")[0]
+        div4.addEventListener("mouseover", function name(params) {
+            console.log("触发了");
+
+        })
+
+        // mouseout 鼠标离开节点时触发,离开父节点会触发
+        var container5 = document.getElementsByClassName("container5")[0]
+        container5.onmouseout = function name(params) {
+            console.log("触发了");
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  
+</head>
+
+<body>
+  <!-- html事件 -->
+  <button class="btn1" onclick="clickhandleone()">html事件</button>
+  <!-- DOM0级事件 -->
+  <button class="btn2">DOM0级事件</button>
+  <!-- DOM2级事件 -->
+  <button class="btn3">DOM2级事件</button>
+  <button class="btn4">单击鼠标键</button>
+  <button class="btn5">双击鼠标键</button>
+  <button class="btn6">按下鼠标键</button>
+  <button class="btn7">释放按下的鼠标键</button>
+  
+  <script>
+    //html事件
+    function clickhandleone() {
+      console.log("点击了");
+    }
+
+    //DOM0级事件
+    var btn2 = document.getElementsByClassName("btn2")[0];
+    btn2.onclick = function () {
+      console.log("点击了");
+    };
+    //DOM2级事件
+    var btn3 = document.getElementsByClassName("btn3")[0];
+    btn3.addEventListener("click", function () {
+      console.log("点击了");
+    });
+
+    //鼠标事件
+    // 单击
+    var btn4 = document.getElementsByClassName("btn4")[0]
+    btn4.addEventListener("click", function () {
+      console.log("单击");
+    })
+
+    // 双击
+    var btn5 = document.getElementsByClassName("btn5")[0]
+    btn5.addEventListener("dblclick", function () {
+      console.log("双击");
+    })
+
+    // 按下鼠标
+    var btn6 = document.getElementsByClassName("btn6")[0]
+    btn6.addEventListener("mousedown", function () {
+      console.log("按下鼠标");
+    })
+
+    // 释放按下的鼠标触发
+    var btn7 = document.getElementsByClassName("btn7")[0]
+    btn7.onmouseup = function () {
+      console.log("触发了");
+
+    }
+  </script>
+</body>
+
+</html>

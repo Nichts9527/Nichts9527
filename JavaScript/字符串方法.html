@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // charAt字符串方法
+    // 打印字符串长度，根据下标打印对应位置的字符串
+    var str = "爱吃女人画的饼"
+    console.log(str.charAt(0))
+    console.log(str.length)
+    // 输出字符串最后一位
+    console.log(str.charAt(str.length - 1))
+
+
+    // concat字符串方法
+    var str1 = "爱吃女人画的饼";
+    var str2 = "文咏珊绯闻男友";
+    console.log(str2.concat(str1));
+    var num1 = "1";
+    var num2 = "8";
+    console.log(num1 + num2);
+    var num3 = 1;
+    var num4 = 8;
+    console.log(num3 + num4);
+
+
+    // indexOf字符串方法
+    // 根据字符串返回其下标，第二个参数为执行语句的起始位置下标
+    var str = "爱吃女人画的饼";
+    console.log(str.indexOf('爱'))
+    console.log(str.indexOf("爱", 6))
+
+
+    // substr字符串方法
+    var str = "ABCDEFGHIJKLMN";
+    // 第一个参数为起始位置下标，第二个参数为输出字符的长度
+    console.log(str.substr(0,3)) 
+    // 参数为负数，从右向左输出字符串
+    console.log(str.substr(-5))
+    // 参数为0输出整个字符串
+    console.log(str.substr(0))
+    // 第二个参数为负数输出空字符串
+    console.log(str.substr(0,-1))
+
+
+    // substring字符串方法
+     // 返回字符串，第一个参数做起始位置下标，第二个参数做结束位置下标
+     var str1 = "tianqingsedengyanyu";
+    console.log(str1.substring(0,4));
+    // 第二个参数比第一个参数大，则两个参数位置对调
+    var str2 = "erwozaidengni";
+    console.log(str2.substring(3,1))
+    // 参数为零输出整个字符串
+    var str3 = "chuiyanniaoniaoshengqi"
+    console.log(str3.substring(0))
+    // 参数为负数默认参数为0
+    var str4 = '这是一个字符串'
+    console.log(str4.substring(-1,3))
+
+
+    // 字符串转换数组
+    var str = "爱吃女人画的饼"
+    var result=str.split('')
+    console.log(result)
+  </script>
+</body>
+
+</html>
