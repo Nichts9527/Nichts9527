@@ -1,0 +1,29 @@
+<template>
+    <div>
+        <h4>{{ age }}</h4>
+        <button @click="changeAge">修改age</button>
+    </div>
+</template>
+<script>
+import { ref, watchEffect } from "vue";
+export default {
+    setup(props, context) {
+        const age = ref(18);
+        // watchEffect会自动收集响应式依赖，默认先执行一次，但是获取不到新值和旧值
+        // stop是watchEffect函数返回的函数，专门用于停止监听
+        const stop = watchEffect(() => {
+            console.log('age:', age.value);//监听age的变化，age变化后会再次执行该回调函数
+        });
+        const changeAge = () => {
+            age.value++;
+            if (age.value > 20) {
+                stop();//停止监听age的变化
+            }
+        }
+        return {
+            age,
+            changeAge
+        }
+    }
+}
+</script>

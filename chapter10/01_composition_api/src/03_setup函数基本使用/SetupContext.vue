@@ -1,0 +1,24 @@
+<template>
+    <div class="setup-context" style="border: 1px solid #ddd;margin: 10px;">
+        SetupContext组件
+        <h4>{{ message }}</h4>
+    </div>
+</template>
+
+<script>
+export default {
+    props: {
+        message: {
+            type: String,
+            required: true
+        }
+    },
+    setup(props, context) {
+        // context对象参数支持解构
+        console.log(props.message);//所有props属性
+        console.log(context.attrs.id, context.attrs.class);//所有非props属性
+        console.log(context.slots);//父组件传递过来的插槽
+        console.log(context.emit);//用于触发事件，如context.emit("name",value)
+    }
+}
+</script>
