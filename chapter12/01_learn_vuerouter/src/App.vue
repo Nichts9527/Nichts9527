@@ -1,13 +1,23 @@
 <template>
   <div class="nav">
     <!-- 切换路由，即切换页面 -->
-    <router-link class="tab" to="/home">首页</router-link>
+    <!-- 为router-link添加custom属性和v-slot指令 -->
+    <router-link class="tab" to="/home" custom v-slot="props">
+      <strong @click="props.navigate">首页：</strong>
+      <span>{{ props.href }}</span>
+      <span>-{{ props.isActive }}</span>
+      <!-- todo ...除了以上的元素，还支持插入自定义组件 -->
+    </router-link>
     <router-link class="tab" to="/about">关于</router-link>
     <router-link class="tab" to="/user/why/id/0001">用户</router-link>
     <button @click="jumpToAbout">关于</button>
   </div>
-  <!-- 路由组件的占位 -->
-  <router-view></router-view>
+  <!-- 路由组件的占位，为router-view添加v-slot指令 -->
+  <router-view v-slot="{ props }">
+    <transition name="why">
+      <component :is="props.Component"></component>
+    </transition>
+  </router-view>
 </template>
 <script>
 import { useRouter } from 'vue-router';
@@ -21,9 +31,9 @@ export default {
         //接收对象类型的参数
         path: "/about",//指定跳转页面路径
         // 通过query属性向目标页面传递参数
-        query:{
-          name:"coder",
-          age:"20"
+        query: {
+          name: "coder",
+          age: "20"
         }
       })
     }
@@ -34,7 +44,15 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+.why-enter-from .why-leave-to {
+  opacity: 0;
+}
+
+.why-enter-active .why-leave-active {
+  transition: opacity 1s ease;
+}
+
 .nav {
   margin: 20px 0px;
 }
