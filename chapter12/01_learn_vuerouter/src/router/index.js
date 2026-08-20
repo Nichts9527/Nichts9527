@@ -56,5 +56,8 @@ const router = createRouter({
   // history: createWebHashHistory(), //指定用hash路由
   history: createWebHistory(), //指定用history路由
 });
-
+// 商品分类页面的路由配置
+const categoryRoute = {
+  path:"/ "
+}
 export default router;
