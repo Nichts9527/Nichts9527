@@ -1,3 +1,5 @@
+
+
 # MySQL数据库知识点归纳
 
 基于MySQL8.0.46版本数据库和Navicat视图工具
@@ -13,41 +15,50 @@
 
 #### 整数类型
 
->1.int(4),4个字节。
->2.tinyint(1),1个字节。
+|    类型    |  范围   |
+| :--------: | :-----: |
+|   int(4)   | 4个字节 |
+| tinyint(1) | 1个字节 |
 
 #### 浮点类型
 
->1.flot(m,d)，单精度浮点型8位精度（4个字节）m为总个数，d为小数位数。
->2.double(m,d)，双精度浮点型16位精度（8个字节）m为总个数，d为小数位数。
+|    类型     |                          含义                           |
+| :---------: | :-----------------------------------------------------: |
+|  flot(m,d)  | 单精度浮点型8位精度（4个字节）m为总个数，d为小数位数。  |
+| double(m,d) | 双精度浮点型16位精度（8个字节）m为总个数，d为小数位数。 |
 
 #### 字符类型
 
->1.char(n),固定长度，即每条数据占用等长字节空间;适合用在身份证号码、手机号码等
->2.varchar(n),固定长度,可以设置最大长度;适合用在长度可变的属性。
->3.text,可变长度，当不知道属性的最大长度时，适合用text。
->4.<mark style="color:red;">按照查询速度：char最快,varchar次之，text最慢。</mark>
+|    类型    |                             含义                             |
+| :--------: | :----------------------------------------------------------: |
+|  char(n)   | 固定长度，即每条数据占用等长字节空间;适合用在身份证号码、手机号码等 |
+| varchar(n) |       固定长度,可以设置最大长度;适合用在长度可变的属性       |
+|    text    |        可变长度，当不知道属性的最大长度时，适合用text        |
+
+**<span style="color:red;">按照查询速度：char最快,varchar次之，text最慢。</span>**
 
 **字符串型使用建议：**
 
->①经常变化的字段用varchar；
->②知道固定长度的用char；
->③尽量用varchar；
->④超过255字符的只能用varchar或者text；
-><mark style="color:red; ">⑤能用varchar的地方不用text。</mark>
+①经常变化的字段用varchar；
+②知道固定长度的用char；
+③尽量用varchar；
+④超过255字符的只能用varchar或者text；
+**<span style="color:red; ">⑤能用varchar的地方不用text。</span>**
 
 #### 日期类型
 
->1.date，含义：日期 YYYY-MM-DD
->2.time，含义：时间HH:MM:SS
->3.datetime，含义：YYYY-MM-DD HH:MM:SS
->4.timestamp，含义：YYYYMMDD HHMMSS
+|   类型    |        含义         |
+| :-------: | :-----------------: |
+|   date    |   日期 YYYY-MM-DD   |
+|   time    |    时间HH:MM:SS     |
+| datetime  | YYYY-MM-DD HH:MM:SS |
+| timestamp |   YYYYMMDD HHMMSS   |
 
 #### 二进制数据（BLOB）
 
->1.BLOB和TEXT存储方式不同，TEXT以文本方式存储，英文存储区分大小写，而Blob是以二进制方式存储，不分大小写。
->2.BLOB存储的数据只能整体读出。
->3.TEXT可以指定字符集，BLOB不用指定字符集。
+1.BLOB和TEXT存储方式不同，TEXT以文本方式存储，英文存储区分大小写，而Blob是以二进制方式存储，不分大小写。
+2.BLOB存储的数据只能整体读出。
+3.TEXT可以指定字符集，BLOB不用指定字符集。
 
 
 
@@ -669,5 +680,246 @@ select last_name from employees where last_name not 1ike %u%;
 |    8     |             OR              |
 |    ※     |   使用圆括号改变优先规则    |
 
+#### 使用ORDER BY排序
 
++ 用ORDER BY子句排序行
+  + ASC：升序排序，默认
+  + DESC：降序排序
++ ORDER BY子句在SELECT语句的最后。
+
+<span style="color:red">在一个不明确的查询结果中排序返回的行。ORDER BY子句用于排序。如果使用了ORDER BY子句，它必须位于SQL语句的最后。</span>
+
+
+SELECT语句的执行顺序如下：
+
++ FROM子句
++ WHERE子句
++ SELECT子句
++ ORDER BY子句
+
+示例一：
+查询employees表中的所有雇员，显示他们的ID、名字与薪水，并按薪水升序排序。
+
+```sql
+select employee_id,last_name,salary from employees order by salary;
+select employee_id,last_name,salary from employees order by salary asc;
+```
+
+示例二：
+查询employees表中的所有雇员，显示他们的ID与名字，并按雇员名字降序排序。
+
+```sql
+ select employee_id,last_name from employees order by last_name;
+```
+
+**使用列别名排序**
+
+示例：
+显示雇员ID，名字。计算雇员的年薪，年薪列别名为annsal，并对该列进行升序排序。
+
+```sql
+select employee_id,last_name,12*salary annsal from employees order by annsal;
+```
+
+**多列排序**
+
++ ORDER BY列表的顺序就是排序的顺序
++ 你可以排序一个不在SELECT列表中的列
+
+示例：
+以升叙排序显示DEPARTMENT_ID列，同时以降序排序显示 SALARY列。
+
+```sql
+ select department_id,salary from employees order by department_id asc,salary desc;
+```
+
+
+
+***
+
+
+
+## 7.SQL函数
+
+**函数是SQL的一个非常强有力的特性，函数能够用于下面的目的：**
+
++ 执行数据计算
++ 修改单个数据项
++ 操作输出进行行分组
++ 格式化显示的日期和数字
++ 转换列数据类型
+
+<span style="color:red">SQL函数有输入参数，并且总有一个返回值。</span>
+
+#### 函数分类
+
+**1.单行函数**
+
+单行函数仅对单个行进行运算，并且每行返回一个结果。
+
+常见的函数类型：
+
++ 字符
++ 数字
++ 日期
++ 转换
+
+**2.多行函数**
+
+多行函数能够操纵成组的行，每个行组给出一个结果，这些函数也被称为组函数。
+
+#### 单行函数
+
+**作用如下：**
+
++ 操作数据项
++ 接受多个参数并返回一个值
++ 作用于每一个返回行
++ 每行返回一个结果
++ 可以修改数据类型
++ 可以嵌套
++ 接受多个参数，参数可以是一个列或者一个表达式
+
+**单行函数分为五类：**
+
+1.字符函数
+
+2.数字函数
+
+3.日期函数
+
+4.转换函数
+
+5.通用函数
+
+#### 字符函数
+
+**大小写处理函数**
+
+|         函数         |        描述         |                         实例                          |
+| :------------------: | :-----------------: | :---------------------------------------------------: |
+| LOWER(s) \| LCASE(s) | 将字符串s转换为小写 | 将字符串 OLDLU转换为小写：SELECT LOWER("OLDLU");oldlu |
+| UPPER(s) \| UCASE(s) | 将字符串s转换为大写 | 将字符串 oldlu转换为大写：SELECT UPPER("oldlu");OLDLU |
+
+示例：
+显示雇员Davies的雇员号、姓名和部门号，将姓名转换为大写。
+
+```sql
+select employee_id,lower(last_name),department_id from employees where last_name ='davies';
+```
+
+**字符处理函数**
+
+|            函数            |                         描述                          |                             实例                             |
+| :------------------------: | :---------------------------------------------------: | :----------------------------------------------------------: |
+|         LENGTH(S)          |                   返回字符串s的长度                   |     返回字符串oldlu的字符数：SELECT LENGTH("oldlu"); --5     |
+|     CONCAT(S1,S2...Sn)     |        字符串S1,S2等多个字符串合并为一个字符串        | 合并多个字符串：SELECT CONCAT("sxt","teacher","oldlu"); --sxt teacher oldlu; |
+|      LPAD(S1,len,S2)       |  在字符串S1的开始处填充字符串S2，使字符串长度达到len  | 将字符串x填充到oldlu字符串的开始处：SELECT LPAD('oldlu',8,'x');  --xxxoldlu |
+|          LTRIM(S)          |                去掉字符串S开始处的空格                | 去掉字符串oldlu开始处的空格：SELECT LTRIM(" oldlu");--oldlu  |
+|      REPLACE(S,S1,S2)      |           将字符串S2替代字符串S中的字符串S1           | 将字符串oldlu中的字符o替换为字符O：SELECT REPLACE('oldlu','o','O'); --Oldlu |
+|         REVERSE(S)         |                 将字符串S的顺序反过来                 |    将字符串abc的顺序反过来：SELECT REVERSE('abc'); -- cba    |
+|      RPAD(S1,len,S2)       | 在字符串S1的结尾处添加字符串S2，使字符串的长度达到len | 将字符串xx填充到oldlu字符串的结尾处：SELECT RPAD('oldlu',8,'x'); -- oldluxxx |
+|          RTRIM(S)          |                去掉字符串S结尾处的空格                |  去掉字符串 oldlu的末尾空格：SELECT RTRIM("oldlu ");--oldlu  |
+|  SUBSTR(S, start,length)   |    从字符串S的start位置截取长度为length的子字符串     | 从字符串 OLDLU中的第2个位置截取3个字符：SELECT SUBSTR("OLDLU", 2, 3); -- LDL |
+| SUBSTRING(S,start, length) |    从字符串S的start位置截取长度为length的子字符串     | 从字符串 OLDLU中的第2个位置截取3个字符：SELECT SUBSTR("OLDLU", 2, 3); -- LDL |
+|          TRIM(S)           |             去掉字符串S开始和结尾处的空格             |  去掉字符串oldlu的首尾空格：SELECT TRIM(" oldlu ");--oldlu   |
+
+示例：
+显示所有工作岗位名称从第4个字符位置开始，包含字符串REP的雇员的ID信息，将雇员的姓和名连接显示在一起，还显示雇员名的的长度，以及名字中字母a的位置。
+
+```sql
+SELECT employee_id, CONCAT(first_name,last_name) AS NAME,job_id, LENGTH(last_name),INSTR(last_name, 'a'),"Contains 'a'?" FROM employees WHERE SUBSTR(job_id, 4) = 'REP';
+```
+
+#### 数字函数
+
+**ROUND(column|expression, n)函数**
+
+ROUND函数四舍五入列、表达式或者n位小数的值。如果第二个参数是0或者缺少，值被四舍五入为整数。如果第二个参数是2，值被四舍五入为两位小数。如果第二个参数是-2，值被四舍五入到小数点左边两位。
+
+```sql
+SELECT ROUND(45.923,2), ROUND(45.923,0),ROUND(45.923,-1);
+```
+
+**TRUNCATE(column|expression,n)函数**
+
+TRUNCATE函数的作用类似于ROUND函数。如果第二个参数是0或者缺少，值被截断为整数。如果第二个参数是2，值被截断为两位小数。如果第二个参数是-2，值被截断到小数点左边两位。<span style="color:red">与ROUND最大的区别是不会进行四舍五入。</span>
+
+```sql
+SELECT TRUNCATE(45.923,2);
+```
+
+**使用MOD(M,N)函数**
+
+MOD函数找出m 除以n的余数。
+示例：
+所有job_id是SA_REP的雇员的名字，薪水以及薪水被5000除后的余数。
+
+```sql
+SELECT last_name,salary,MOD(salary, 5000) FROM employees WHERE job_id="SA_REP";
+```
+
+#### 日期函数
+
+在MySQL中允许直接使用字符串表示日期，但是要求字符串的日期格式必须为：YYYY-MM-DD HH:MI:SS' 或者YYYY/MM/DD HH:MI:SS';
+
+|      函数      |                   描述                   |                    实例                     |
+| :------------: | :--------------------------------------: | :-----------------------------------------: |
+|   CURDATE()    |               返回当前日期               |       SELECT CURDATE(); --2026-08-22        |
+|   CURTIME()    |               返回当前时间               |        SELECT CURTIME(); --23:21:22         |
+| CURRENT_DATE() |               返回当前日期               |       SELECT CURDATE(); --2026-08-22        |
+| CURRENT_TIME() |               返回当前时间               |        SELECT CURTIME(); --23:21:22         |
+|     DAY(d)     |          返回日期值d的日期部分           |        SELECT DAY("2017-06-15");--15        |
+|    HOUR(t)     |             返回t中的小时值              |         SELECT HOUR('01:02:03");--1         |
+|    MONTH(d)    |        返回日期d中的月份值，1到12        |  SELECT MONTH("2011-11-11 11:11:11");--11   |
+|   SECOND(t)    |             返回t中的秒钟值              |        SELECT SECOND('01:02:03');--3        |
+|     NOW()      |            返回当前日期和时间            |     SELECT NOW();--2026-08-22 23:25:47      |
+|   TO_DAYS(d)   |     计算日期d距离0000年1月1日的天数      | SELECT TO_DAYS('0000-01-01 01:01:01');--366 |
+|    WEEK(d)     | 计算日期d是本年的第几个星期，范围是0到53 |   SELECT WEEK("2011-11-11 11:11:11");->45   |
+|    YEAR(d)     |                 返回年份                 |      SELECT YEAR("2017-06-15"); --2017      |
+
+示例一:
+向employees表中添加一条数据，雇员ID：300，名字：kevin，email：kevin@sxt.cn，入职时间：2049-5-18:30:30，工作部门：'T_PROG'。
+
+```sql
+insert into employees (EMPLOYEE_ID, 1ast_name, email, HIRE_DATE, JOB_ID) values(300,'kevin','kevin@sxt.cn','2049-5-1 8:30:30','IT_PROG');
+```
+
+示例二:
+显示所有在部门90中的雇员的名字和从业的周数。雇员的总工作时间以周计算，用当前日期(SYSDATE)减去雇员的受雇日期，再除以7。
+
+```sql
+SELECT last_name,(SYSDATE()-hire_date)/7 AS WEEKS FROM employees WHERE department_id = 90;
+```
+
+#### 转换函数
+
+**数据类型转换**
+
+1.隐式数据类型转换：
+
+> 隐式数据类型转换是指MySQL服务器能够自动地进行类型转换。如:可以将标准格式的字
+> 串日期自动转换为日期类型。
+> MySQL字符串日期格式为:YYYY-MM-DD HH:MI:SS' 或 ‘YYYY/MM/DD HH:MI:SS';
+
+2.显式数据类型转换
+
+> 显示数据类型转换是指需要依赖转换函数来完成相关累心的转换。如:
+>
+> + DATE_FORMAT(date,format);将日期转换成字符串
+> + STR_TO_DATE(str,format);将字符串转换成日期
+
+示例一：
+向employees表中添加一条数据，雇员ID：400，名字：oldlu，email:oldlu@sxt.cn，入职时间：2049年5月5日，工作部门："T_PROG"。
+
+```sql
+insert into employees (EMPLOYEE_ID,1ast_name,email,HIRE_DATE,J0B_ID) values (400,'oldlu','oldlu@sxt.cn',STR_TO_DATE('2049年5月5日','%Y年%m月%d日'),'IT_PR0G');
+```
+
+示例二:
+查询employees表中雇员名字为King的雇员的入职日期，要求显示格式为yyyy年MM月dd 日。
+
+```sql
+select DATE_FORMAT(hire_date,'%Y年%m月%d') from employees where last_name = 'King';
+```
 
