@@ -1,5 +1,3 @@
-
-
 # MySQL数据库知识点归纳
 
 基于MySQL8.0.46版本数据库和Navicat视图工具
@@ -13,21 +11,21 @@
 
 ## 1.MySQL数据类型
 
-#### 整数类型
+### 整数类型
 
 |    类型    |  范围   |
 | :--------: | :-----: |
 |   int(4)   | 4个字节 |
 | tinyint(1) | 1个字节 |
 
-#### 浮点类型
+### 浮点类型
 
 |    类型     |                          含义                           |
 | :---------: | :-----------------------------------------------------: |
 |  flot(m,d)  | 单精度浮点型8位精度（4个字节）m为总个数，d为小数位数。  |
 | double(m,d) | 双精度浮点型16位精度（8个字节）m为总个数，d为小数位数。 |
 
-#### 字符类型
+### 字符类型
 
 |    类型    |                             含义                             |
 | :--------: | :----------------------------------------------------------: |
@@ -45,7 +43,7 @@
 ④超过255字符的只能用varchar或者text；
 **<span style="color:red; ">⑤能用varchar的地方不用text。</span>**
 
-#### 日期类型
+### 日期类型
 
 |   类型    |        含义         |
 | :-------: | :-----------------: |
@@ -54,7 +52,7 @@
 | datetime  | YYYY-MM-DD HH:MM:SS |
 | timestamp |   YYYYMMDD HHMMSS   |
 
-#### 二进制数据（BLOB）
+### 二进制数据（BLOB）
 
 1.BLOB和TEXT存储方式不同，TEXT以文本方式存储，英文存储区分大小写，而Blob是以二进制方式存储，不分大小写。
 2.BLOB存储的数据只能整体读出。
@@ -69,25 +67,25 @@
 
 ## 2.操作数据库的关键字
 
-#### 数据库创建语句
+### 数据库创建语句
 
 ```sql
 CREATE DATABASE 数据库名 DEFAULT CHARACTER SET 字符编码;
 ```
 
-#### 数据库删除语句
+### 数据库删除语句
 
 ```sql
 DROP DATABASE 数据库名称;
 ```
 
-#### 查看已创建数据库
+### 查看已创建数据库
 
 ```sql
 SHOW DATABASES;
 ```
 
-#### 选择数据库
+### 选择数据库
 
 ```sql
 USE 数据库名;
@@ -102,49 +100,49 @@ USE 数据库名;
 
 ## 3.操作库表的关键字
 
-#### 库表创建语句
+### 库表创建语句
 
 ```sql
 CREATE TABLE 表名(列名 类型,列名 类型...);
 ```
 
-#### 库表删除语句
+### 库表删除语句
 
 ```sql
 DROP TABLE 表名;
 ```
 
-#### 查看已创建库表
+### 查看已创建库表
 
 ```sql
 SHOW TABLES;
 ```
 
-#### 修改表名
+### 修改表名
 
 ```sql
 ALTER TABLE 旧表名 RENAME 新表名;
 ```
 
-#### 修改列名
+### 修改列名
 
 ```sql
 ALTER TABLE 表名 CHANGE COLUMN 旧列名 新列名 类型;
 ```
 
-#### 修改列类型
+### 修改列类型
 
 ```sql
 ALTER TABLE 表名 MODIFY 列名 新类型;
 ```
 
-#### 添加新列
+### 添加新列
 
 ```sql
 ALTER TABLE 表名 ADD COLUMN 新列名 类型;
 ```
 
-#### 删除指定列
+### 删除指定列
 
 ```sql
 ALTER TABLE 表名 DROP COLUMN 列名;
@@ -159,28 +157,24 @@ ALTER TABLE 表名 DROP COLUMN 列名;
 
 <span style="color:red">数据库约束是对表中的数据进行进一步的限制，保证数据的正确性、有效性和完整性。</span>
 
-#### 约束类型
+### 约束类型
 
 >1.主键约束(Primary Key) PK
 >主键约束是使用最频繁的约束。在设计数据表时，一般情况下，都会要求表中设置一个主键。
 >主键是表的一个特殊字段，该字段能唯一标识该表中的每条信息。例如，学生信息
 >表中的学号是唯一的。  
-
 >2.外键约束(Foreign Key)FK
 >外键约束经常和主键约束一起使用，用来确保数据的一致性。  
-
 >3.唯一性约束(Unique)
 >唯一约束与主键约束有一个相似的地方，就是它们都能够确保列的唯一性。与主键约束不同的是，唯一约束在一个表中可以有多个，并且设置唯一约束的列是允许有
 >空值的。
-
 >4.非空约束(NotNull)
 >非空约束用来约束表中的字段不能为空。
-
 >5.检查约束(Check)
 >检查约束也叫用户自定义约束，是用来检查数据表中，字段值是否有效的一个手
 >段，但目前MySQL数据库不支持检查约束。
 
-#### 添加主键约束(Primary Key)
+### 添加主键约束(Primary Key)
 
 1.单一主键:使用一个列作为主键列，当该列的值有重复时，则违反唯一约束。
 2.联合主键:使用多个列作为主键列，当多个列的值都相同时，则违反唯一约束。
@@ -191,7 +185,7 @@ ALTER TABLE 表名 DROP COLUMN 列名;
 ALTER TABLE 表名 ADD PRIMARY KEY(列名);
 ```
 
-#### 主键自增长
+### 主键自增长
 
 **MySQL中的自动增长类型要求:**
 
@@ -206,7 +200,7 @@ ALTER TABLE 表名 ADD PRIMARY KEY(列名);
 ALTER TABLE 表名 MODIFY 主键 类型 AUTO_INCREMENT;
 ```
 
-#### 删除主键
+### 删除主键
 
 使用DDL语句删除主键
 
@@ -216,7 +210,7 @@ ALTER TABLE 表名 DROP PRIMARY KEY;
 
 <span style="color:red">注意：删除主键时，如果主键列具备自动增长能力，需要先去掉自动增长，然后在删除主键。</span>
 
-#### 添加外键约束(Foreign Key)
+### 添加外键约束(Foreign Key)
 
 使用DDL语句修改表添加外键约束
 
@@ -235,7 +229,7 @@ ALTER TABLE 表名 ADD CONSTRAINT 约束名 FOREIGN KEY(列名) REFERENCES 参�
 ALTER TABLE 表名 MODIFY 主键 类型 AUTO_INCREMENT;
 ```
 
-#### 删除主键
+### 删除主键
 
 使用DDL语句删除主键
 
@@ -245,7 +239,7 @@ ALTER TABLE 表名 DROP PRIMARY KEY;
 
 <span style="color:red">注意：删除主键时，如果主键列具备自动增长能力，需要先去掉自动增长，然后在删除主键。</span>
 
-#### 添加外键约束(Foreign Key)
+### 添加外键约束(Foreign Key)
 
 使用DDL语句修改表添加外键约束
 
@@ -253,7 +247,7 @@ ALTER TABLE 表名 DROP PRIMARY KEY;
 ALTER TABLE 表名 ADD CONSTRAINT 约束名 FOREIGN KEY(列名) REFERENCES 参照的表名(参照的列名);
 ```
 
-#### 删除外键约束
+### 删除外键约束
 
 使用DDL语句删除外键约束
 
@@ -261,7 +255,7 @@ ALTER TABLE 表名 ADD CONSTRAINT 约束名 FOREIGN KEY(列名) REFERENCES 参�
 ALTER TABLE 表名 DROP FOREIGN KEY 约束名;
 ```
 
-#### 添加唯一性约束(Unique)
+### 添加唯一性约束(Unique)
 
 使用DDL语句添加唯一性约束
 
@@ -269,7 +263,7 @@ ALTER TABLE 表名 DROP FOREIGN KEY 约束名;
 ALTER TABLE 表名 ADD CONSTRAINT 约束名 UNIQUE(列名);
 ```
 
-#### 删除唯一性约束
+### 删除唯一性约束
 
 使用DDL语句删除唯一性约束
 
@@ -277,7 +271,7 @@ ALTER TABLE 表名 ADD CONSTRAINT 约束名 UNIQUE(列名);
 ALTER TABLE 表名 DROP KEY 约束名;
 ```
 
-#### 添加非空约束(Not Null)
+### 添加非空约束(Not Null)
 
 使用DDL语句添加非空约束
 
@@ -285,7 +279,7 @@ ALTER TABLE 表名 DROP KEY 约束名;
 ALTER TABLE 表名 MODIFY 列名 类型 NOT NULL;
 ```
 
-#### 删除非空约束
+### 删除非空约束
 
 使用DDL语句删除非空约束
 
@@ -293,7 +287,7 @@ ALTER TABLE 表名 MODIFY 列名 类型 NOT NULL;
 ALTER TABLE 表名 MODIFY 列名 类型 NULL;
 ```
 
-#### 创建表时添加约束
+### 创建表时添加约束
 
 查询表中的约束信息
 
@@ -315,7 +309,7 @@ CREATE TABLE 表名(列名 类型 约束,列名 类型 约束,...);
 
 ## 5.MySQL中DML操作
 
-#### 添加数据(INSERT)
+### 添加数据(INSERT)
 
 使用DML语言添加数据
 
@@ -323,7 +317,7 @@ CREATE TABLE 表名(列名 类型 约束,列名 类型 约束,...);
 INSERT INTO 表名(列名1,列名2,列名3,...) VALUES(值1,值2,值3,...);
 ```
 
-#### 默认值处理(DEFAULT)
+### 默认值处理(DEFAULT)
 
 **在MySQL中可以使用DEFAULT为列设定一个默认值。如果在插入数据时并未指定该列的
 值，那么MySQL会将默认值添加到该列中。**
@@ -362,7 +356,7 @@ alter table emp3 add column job_id int default 0;
 2.insert into emp3 values (default,"oldlu",default,default);
 ```
 
-#### 更新数据(UPDATE)
+### 更新数据(UPDATE)
 
 ```sql
 UPDATE 表名 SET 列名=值,列名=值 WHERE 条件;
@@ -380,7 +374,7 @@ UPDATE 表名 SET 列名=值,列名=值 WHERE 条件;
 update emp3 set address = "BeiJing" where emp_id = 1;
 ```
 
-#### 删除数据(DELETE)
+### 删除数据(DELETE)
 
 使用DELETE删除数据
 
@@ -414,7 +408,7 @@ truncate table emp3;
 
 
 
-#### <span style="color:red">清空表时DELETE与 TRUNCATE 区别</span>
+### <span style="color:red">清空表时DELETE与 TRUNCATE 区别</span>
 
 + truncate是整体删除(速度较快)，delete是逐条删除(速度较慢);
 
@@ -436,9 +430,9 @@ truncate table emp3;
 + **行选择:**能够使用SELECT语句的行选择功能选择表中的行，这些行是想要用查询返回的。能够使用不同的标准限制看见的行。
 + **连接:**能够使用SELECT语句的连接功能来集合数据，这些数据被存储在不同的表中，在它们之间可以创建连接，查询出我们所关心的数据。
 
-#### SELECT基本语法
+### SELECT基本语法
 
-#### SELECT基本语句
+### SELECT基本语句
 
 在最简单的形式中，SELECT语句必须包含下面的内容:
 
@@ -448,7 +442,7 @@ truncate table emp3;
 
   
 
-#### 在语法中
+### 在语法中
 
 |        语法        |          含义          |
 | :----------------: | :--------------------: |
@@ -459,7 +453,7 @@ truncate table emp3;
 |       alias        | 给所选择的列不同的标题 |
 |     FROM table     |     指定包含列的表     |
 
-#### 查询中的列选择
+### 查询中的列选择
 
 **选择所有列**
 
@@ -485,7 +479,7 @@ select * from departments;
 select department_name from departments;
 ```
 
-#### 查询中的算术表达式
+### 查询中的算术表达式
 
 需要修改数据显示方式，如执行计算，或者作假定推测，这些都可能用到算术表达式。一个算术表达式可以包含列名、固定的数字值和算术运算符。
 
@@ -502,7 +496,7 @@ select employees_id,last_name,12*salary from employees;
 + 如果在一个表达式中的运算符优先级相同，计算从左到右进行。
 + 可以用圆括号强制其中的表达式先计算。
 
-####  MySQL中定义空值
+###  MySQL中定义空值
 
 <span style="color:red">1.null不是0，也不是空格。</span>
 <span style="color:red">2.null是一个未分配的、未知的，或不适用的值。</span>
@@ -510,7 +504,7 @@ select employees_id,last_name,12*salary from employees;
 <span style="color:red">4.空是一个难以获得的、未分配的、未知的，或不适用的值。空和0或者空格不相同。</span>
 <span style="color:red">5.0是一个数字，而空格是一个字符。</span>
 
-####  算术表达式中的空值
+###  算术表达式中的空值
 
 包含空值的算术表达式计算结果为空
 
@@ -518,7 +512,7 @@ select employees_id,last_name,12*salary from employees;
 SELECT last_name,12*salary*commission_pct FROM employees;
 ```
 
-#### MySQL中的别名
+### MySQL中的别名
 
 使用列别名
 
@@ -526,7 +520,7 @@ SELECT last_name,12*salary*commission_pct FROM employees;
 SELECT 列名 AS 列别名 FROM 表名 WHERE 条件;
 ```
 
-#### MySQL中去除重复
+### MySQL中去除重复
 
 SELECT默认显示所有的行，包括相同的行。
 
@@ -540,7 +534,7 @@ SELECT 列名 FROM 表名;
 SELECT DISTINCT department_id FROM employees;
 ```
 
-#### 查询中的行选择
+### 查询中的行选择
 
 + 用WHERE子句限制从查询返回的行。
 + 一个WHERE子句包含一个必须满足的条件，WHERE子句紧跟着FROM子句。
@@ -550,7 +544,7 @@ SELECT DISTINCT department_id FROM employees;
 SELECT *|投影列 FROM 表名 WHERE 选择条件;
 ```
 
-#### MySQL中的比较条件
+### MySQL中的比较条件
 
 |   运算   |   含义   |
 | :------: | :------: |
@@ -577,7 +571,7 @@ select last_name,salary from employees where salary >= 3000;
 select last_name,salary from employees where salary<>5000;
 ```
 
-#### 其他比较条件
+### 其他比较条件
 
 |       操作       |         含义         |
 | :--------------: | :------------------: |
@@ -586,7 +580,7 @@ select last_name,salary from employees where salary<>5000;
 |       LIKE       |   匹配一个字符模版   |
 |     IS NULL      |      是一个空值      |
 
-**1.使用BETWEEN条件**
+#### 1.使用BETWEEN条件
 
 可以用BETWEEN范围条件显示基于一个值范围的行。指定的范围包含一个下限和一个上限。
 
@@ -594,7 +588,7 @@ select last_name,salary from employees where salary<>5000;
 select employee_id,last_name,salary from employees where salary between 3000 and 8000;
 ```
 
-**2.使用IN条件**
+#### 2.使用IN条件
 
 使用 IN成员条件测试在列表中的值。
 
@@ -605,7 +599,7 @@ select employee_id,last_name,salary from employees where salary between 3000 and
 select employee_id,last_name,salary from employees where salary in(5000,6000,8000);
 ```
 
-**3.使用LIKE条件**
+#### 3.使用LIKE条件
 
 + 使用LIKE 条件执行有效搜索串值的通配符搜索。
 
@@ -621,7 +615,7 @@ select employee_id,last_name,salary from employees where salary in(5000,6000,800
 SELECT last_name FROM employees WHERE last_name LIKE "_e%";
 ```
 
-**4.使用NULL条件**
+#### 4.使用NULL条件
 
 <span style="color:red">NULL条件，包括IS NULL条件和IS NOT NULL条件。</span>
 
@@ -712,7 +706,7 @@ select employee_id,last_name,salary from employees order by salary asc;
  select employee_id,last_name from employees order by last_name;
 ```
 
-**使用列别名排序**
+##### 使用列别名排序
 
 示例：
 显示雇员ID，名字。计算雇员的年薪，年薪列别名为annsal，并对该列进行升序排序。
@@ -721,7 +715,7 @@ select employee_id,last_name,salary from employees order by salary asc;
 select employee_id,last_name,12*salary annsal from employees order by annsal;
 ```
 
-**多列排序**
+##### 多列排序
 
 + ORDER BY列表的顺序就是排序的顺序
 + 你可以排序一个不在SELECT列表中的列
@@ -751,9 +745,9 @@ select employee_id,last_name,12*salary annsal from employees order by annsal;
 
 <span style="color:red">SQL函数有输入参数，并且总有一个返回值。</span>
 
-#### 函数分类
+### 函数分类
 
-**1.单行函数**
+#### 1.单行函数
 
 单行函数仅对单个行进行运算，并且每行返回一个结果。
 
@@ -764,11 +758,11 @@ select employee_id,last_name,12*salary annsal from employees order by annsal;
 + 日期
 + 转换
 
-**2.多行函数**
+#### 2.多行函数
 
 多行函数能够操纵成组的行，每个行组给出一个结果，这些函数也被称为组函数。
 
-#### 单行函数
+### 单行函数
 
 **作用如下：**
 
@@ -794,7 +788,7 @@ select employee_id,last_name,12*salary annsal from employees order by annsal;
 
 #### 字符函数
 
-**大小写处理函数**
+##### 大小写处理函数
 
 |         函数         |        描述         |                         实例                          |
 | :------------------: | :-----------------: | :---------------------------------------------------: |
@@ -808,7 +802,7 @@ select employee_id,last_name,12*salary annsal from employees order by annsal;
 select employee_id,lower(last_name),department_id from employees where last_name ='davies';
 ```
 
-**字符处理函数**
+#### 字符处理函数
 
 |            函数            |                         描述                          |                             实例                             |
 | :------------------------: | :---------------------------------------------------: | :----------------------------------------------------------: |
@@ -833,7 +827,7 @@ SELECT employee_id, CONCAT(first_name,last_name) AS NAME,job_id, LENGTH(last_nam
 
 #### 数字函数
 
-**ROUND(column|expression, n)函数**
+##### ROUND(column|expression, n)函数
 
 ROUND函数四舍五入列、表达式或者n位小数的值。如果第二个参数是0或者缺少，值被四舍五入为整数。如果第二个参数是2，值被四舍五入为两位小数。如果第二个参数是-2，值被四舍五入到小数点左边两位。
 
@@ -841,7 +835,7 @@ ROUND函数四舍五入列、表达式或者n位小数的值。如果第二个�
 SELECT ROUND(45.923,2), ROUND(45.923,0),ROUND(45.923,-1);
 ```
 
-**TRUNCATE(column|expression,n)函数**
+##### TRUNCATE(column|expression,n)函数
 
 TRUNCATE函数的作用类似于ROUND函数。如果第二个参数是0或者缺少，值被截断为整数。如果第二个参数是2，值被截断为两位小数。如果第二个参数是-2，值被截断到小数点左边两位。<span style="color:red">与ROUND最大的区别是不会进行四舍五入。</span>
 
@@ -849,7 +843,7 @@ TRUNCATE函数的作用类似于ROUND函数。如果第二个参数是0或者缺
 SELECT TRUNCATE(45.923,2);
 ```
 
-**使用MOD(M,N)函数**
+##### 使用MOD(M,N)函数
 
 MOD函数找出m 除以n的余数。
 示例：
@@ -859,7 +853,7 @@ MOD函数找出m 除以n的余数。
 SELECT last_name,salary,MOD(salary, 5000) FROM employees WHERE job_id="SA_REP";
 ```
 
-#### 日期函数
+##### 日期函数
 
 在MySQL中允许直接使用字符串表示日期，但是要求字符串的日期格式必须为：YYYY-MM-DD HH:MI:SS' 或者YYYY/MM/DD HH:MI:SS';
 
@@ -894,7 +888,7 @@ SELECT last_name,(SYSDATE()-hire_date)/7 AS WEEKS FROM employees WHERE departmen
 
 #### 转换函数
 
-**数据类型转换**
+##### 数据类型转换
 
 1.隐式数据类型转换：
 
@@ -922,4 +916,133 @@ insert into employees (EMPLOYEE_ID,1ast_name,email,HIRE_DATE,J0B_ID) values (400
 ```sql
 select DATE_FORMAT(hire_date,'%Y年%m月%d') from employees where last_name = 'King';
 ```
+
+#### 通用函数
+
+|                             函数                             |                             描述                             |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+|                        IF(expr,v1,v2)                        |      如果表达式expr成立，返回结果v1;否则，返回结果v2。       |
+|                        IFNULL(v1,v2)                         |          如果v1的值不为NULL，则返回v1，否则返回v2。          |
+|                      ISNULL(expression)                      |                    判断表达式是否为NULL。                    |
+|                     NULLIF(expr1, expr2)                     | 比较两个参数是否相同，如果参数expr1与expr2相等返回NULL，否则返回expr1。 |
+|             COALESCE(expr1, expr2, ....,expr_n)              |           返回参数中的第一个非空表达式(从左向右)。           |
+| CASE expression WHEN condition1 THEN result1 WHEN condition2 THEN result2...WHEN conditionN THEN resultN ELSE result END; | CASE表示函数开始，END表示函数结束。如果condition1成立，则返回result1，如果condition2成立，则返回result2，当全部不成立则返回result，而当有一个成立之后，后面的就不执行了。 |
+
+示例一：
+查询部门编号是50或者80的员工信息，包含他们的名字、薪水、佣金。在income列中，如果有佣金则显示SAL+COMM，无佣金则显示'SAL'。
+
+```sql
+SELECT LAST_NAME,SALARY,COMMISSION_PCT,IF(ISNULL(COMMISSION_PCT),'SAL','SAL+COMM') AS INCOME FROM EMPLOYEES WHERE DEPARTMENT_ID IN(50,80);
+```
+
+示例二：
+计算雇员的年报酬，你需要用12乘以月薪，再加上它的佣金(等于年薪乘以佣金百分比)。
+
+```sql
+SELECT LAST_NAME,SALARY,IFNULL(COMMISSION_PCT,0),(SALARY*2)+(SALARY*12*IFNULL(COMMISSION_PCT,0)) FROM employees;
+```
+
+示例三：
+查询员工表，显示他们的名字、名字的长度该列名为expr1，姓氏、姓氏的长度该列名为expr2。在result列中，如果名字与姓氏的长度相同则显示空，如果不相同则显示名字长度。
+
+```sql
+SELECT LAST_NAME,LENGTH(LAST_NAME) AS EXPR2,FIRST_NAME,LENGTH(FIRST_NAME) AS EXPR2 ,NULLIF(LENGTH(FIRST_NAME),LENGTH(LAST_NAME)) RESULT FROM employees; 
+```
+
+示例四：
+查询员工表，显示他们的名字，如果COMMISSION_PCT值是非空，显示它。如果COMMISSION_PCT值是空，则显示 SALARY.如果COMMISSION_PCT和SALARY值都是空，那么显示10。在结果中对佣金列升序排序。
+
+```sql
+SELECT LAST_NAME,COALESCE(COMMISSION_PCT,SALARY,10),COMMISSION_PCT FROM employees ORDER BY COMMISSION_PCT ASC;
+```
+
+示例五：
+查询员工表，如果JOB_ID是IT_PROG，薪水增加10%，如果JOB_ID是ST_CLERK，薪水增加15%，如果JOB_ID是SA_REP，薪水增加20%。对于所有其他的工作角色，不增加薪水。
+
+```sql
+SELECT LAST_NAME,JOB_ID,SALARY,CASE JOB_ID WHEN "IT_PROG" THEN 1.10*SALARY WHEN "ST_CLERK" THEN  1.15*SALARY WHEN "SA_REP" THEN  1.20*SALARY ELSE SALARY END REVISED_SALARY FROM employees;
+```
+
+
+
+***
+
+
+
+## 8.多表查询
+
+<span style="color:red">笛卡尔乘积：当一个连接条件无效或被遗漏时，其结果是一个笛卡尔乘积(Cartesianproduct)，其中所有行的组合都被显示。第一个表中的所有行连接到第二个表中的所有行。一个笛卡尔乘积会产生大量的行，其结果没有什么用。你应该在WHERE子句中始终包含一个有效的连接条件，除非你有特殊的需求，需要从所有表中组合所有的行。</span>>
+
+### 多表查询分类
+
++ sql92标准:
+  + 内连接(等值连接、非等值连接、自连接)。
++ sql99标准:
+  + 内连接(等值连接、非等值连接、自连接)。
+  + 外连接(左外、右外、全外(MySQL不支持全外连接)、交叉连接。
+
+### SQL92等值连接
+
+为了确定一个雇员的部门名，需要比较EMPLOYEES表中的DEPARTMENT_ID列与DEPARTMENTS 表中 DEPARTMENT_ID 列的值。 在 EMPLOYEES 和DEPARTMENTS 表之间的关系是一个相等(equjoin)关系，即，两个表中DEPARTMENT_ID列的值必须相等。
+
+#### 等值连接的特点
+
+1.多表等值连接的结果为多表的交集部分;
+2.n表连接，至少需要n-1个连接条件;
+3.多表不分主次，没有顺序要求;
+4.一般为表起别名，提高阅读性和性能;
+5.可以搭配排序、分组、筛选....等子句使用;
+
+**注意：等值连接也被称为简单连接(simple joins)或内连接(inner joins)。**
+
+#### 等值连接的使用
+
++ SELECT子句指定要返回的列名:
+
+  + employee last name、employee number、department number这些是
+    EMPLOYEES 表中的列。
+  + department number、 department name  location ID, 这些
+    是 DEPARTMENTS 表中的列。
+
++ FROM子句指定数据库必须访问的两个表:
+
+  + EMPLOYEES 表。
+
+  + DEPARTMENTS 表。
++ WHERE子句指定表怎样被连接:
+  + EMPLOYEES.DEPARTMENT_ID = DEPARTMENTS.DEPARTMENT_ID, 因为DEPARIVIENI_ID列是两个表的同名列，它必须用表名做前缀以避免混淆。
+
++ 添加查询条件(AND)：除连接之外，可能还要求用WHERE子句在连接中限制一个或多个表中的行。
+
++ 限制不明确的列名：
+  + 需要在WHERE子句中用表的名字限制列的名字以避免含糊不清。没有表前缀，DEPARTMENT_ID 列可能来自 DEPARTMENTS 表,也可能来自EMPLOYEES 表，这种情况下需要添加表前缀来执行查询。
+  + 如果列名在两个表之间不相同，就不需要限定列。但是，使用表前缀可以改善性能，因为MySQL服务器可以根据表前缀找到对应的列。
+  + “必须限定不明确的列名”也适用于在其它子句中可能引起混淆的那些列，例如SELECT子句或ORDERBY子句。
+
++ 使用表别名：
+  + 使用表别名简化查询。
+  + 使用表别名改善性能。
+  + 表别名不易过长，短一些更好。
+  + **表别名应该是有意义的。**
+  + 表别名只对当前的SELECT语句有效。
+
+##### 多表连接
+
+<span style="color:red">为了连接n个表，最少需要n-1个连接条件。</span>>
+
+示例一：
+查询雇员King所在的部门名称。
+
+```sql
+SELECT d.DEPARTMENT_NAME FROM departments d,employees e WHERE e.DEPARTMENT_ID=d.DEPARTMENT_ID AND LAST_NAME="King";
+```
+
+示例二：
+显示每个雇员的last name、departmentname 和city。
+
+```sql
+SELECT e.LAST_NAME,d.DEPARTMENT_NAME,l.CITY FROM employees e,departments d,locations l WHERE e.DEPARTMENT_ID = d.DEPARTMENT_ID AND d.LOCATION_ID = l.LOCATION_ID
+```
+
+#### 非等值连接的使用
 
