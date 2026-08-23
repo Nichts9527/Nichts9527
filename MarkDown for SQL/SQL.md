@@ -1045,4 +1045,3 @@ SELECT e.LAST_NAME,d.DEPARTMENT_NAME,l.CITY FROM employees e,departments d,locat
 ```
 
 #### 非等值连接的使用
-
