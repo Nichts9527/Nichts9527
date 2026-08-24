@@ -1045,3 +1045,33 @@ SELECT e.LAST_NAME,d.DEPARTMENT_NAME,l.CITY FROM employees e,departments d,locat
 ```
 
 #### 非等值连接的使用
+
+一个非等值连接是一种不同于等值操作的连接条件。EMPLOYEES表和JOB_GRADESA表之间的关系有一个非等值连接例子。在两个表之间的关系是EMPLOYEES表中的SALARY列必须是JOB_GRADES表的 LOWEST_SALARY 和HIGHEST_SALARY 列之间的值。使用不同于等于(=)的操作符获得关系。
+
+示例一：
+创建job_grades 表,包含lowest_sal, highest_sal,grade_level。
+
+```sql
+CREATE TABLE JOB_GRADES(LOWEST_SAL INT,HIGHEST_SAL INT,GRADE_LEVEL VARCHAR(30));
+```
+
+示例二：
+插入数据
+1000 2999 A
+2000 4999 B
+5000 7999 C
+8000 12000 D
+
+```sql
+INSERT INTO JOB_GRADES VALUES (1000,2999,"A");
+INSERT INTO JOB_GRADES VALUES (2000,4999,"B");
+INSERT INTO JOB_GRADES VALUES (5000,7999,"C");
+INSERT INTO JOB_GRADES VALUES (8000,12000,"D");
+```
+
+示例三：
+查询所有雇员的薪水级别。
+
+```sql
+```
+
