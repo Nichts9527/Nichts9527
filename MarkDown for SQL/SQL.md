@@ -1072,23 +1072,23 @@ select e.last_name,j.grade_level from employees e ,job_grades j where e.salary b
 连接一个表到它自己。有时需要连接一个表到它自己。为了找到每个雇员的经理的名字，则
 需要连接EMPLOYEES表到它自己，或执行一个自连接。
 
-示例一:
+示例一：
 查询每个雇员的经理的名字以及雇员的名字，雇员名字列别名为W，经理列别名为M。
 
 ```sql
 SELECT worker.LAST_NAME AS w,manager.LAST_NAME AS m FROM employees worker,employees manager WHERE worker.MANAGER_ID = manager.EMPLOYEE_ID;
 ```
 
-示例二:
+示例二：
 查询Fox的经理是谁?显示他的名字。
 
 ```sql
 SELECT worker.LAST_NAME AS w,manager.LAST_NAME AS m FROM employees worker,employees manager WHERE worker.MANAGER_ID = manager.EMPLOYEE_ID AND worker.LAST_NAME = "fox";
 ```
 
-### SQL99交叉乘积（笛卡尔乘积）
+### SQL99交叉乘积CROSSJOIN（笛卡尔乘积）
 
-示例:
+示例：
 使用交叉连接查询employees表与departments表。
 
 ```sql
@@ -1097,9 +1097,22 @@ select * from employees cross join departments;
 
 
 
-### SQL99自然连接
+### SQL99自然连接NATURALOIN
 
 **连接只能发生在两个表中有相同名字和数据类型的列上。如果列有相同的名字，但数据类型不同，NATURALJOIN语法会引起错误。**
 
+示例：
+使用自然连接查询所有有部门的雇员的名字以及部门名称。
+
 ```sql
+SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e NATURAL JOIN departments d;
 ```
+
+等值连接实现：
+
+```sql
+SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e,departments d WHERE e.DEPARTMENT_ID=d.DEPARTMENT_ID;
+```
+
+### SQL99内连接INNERJOIN
+
