@@ -33,7 +33,7 @@
 | varchar(n) |       固定长度,可以设置最大长度;适合用在长度可变的属性       |
 |    text    |        可变长度，当不知道属性的最大长度时，适合用text        |
 
-**<span style="color:red;">按照查询速度：char最快,varchar次之，text最慢。</span>**
+**按照查询速度：char最快,varchar次之，text最慢。**
 
 **字符串型使用建议：**
 
@@ -41,7 +41,7 @@
 ②知道固定长度的用char；
 ③尽量用varchar；
 ④超过255字符的只能用varchar或者text；
-**<span style="color:red; ">⑤能用varchar的地方不用text。</span>**
+**⑤能用varchar的地方不用text。**
 
 ### 日期类型
 
@@ -155,7 +155,7 @@ ALTER TABLE 表名 DROP COLUMN 列名;
 
 ## 4.MySQL中的约束
 
-<span style="color:red">数据库约束是对表中的数据进行进一步的限制，保证数据的正确性、有效性和完整性。</span>
+**数据库约束是对表中的数据进行进一步的限制，保证数据的正确性、有效性和完整性。**
 
 ### 约束类型
 
@@ -208,7 +208,7 @@ ALTER TABLE 表名 MODIFY 主键 类型 AUTO_INCREMENT;
 ALTER TABLE 表名 DROP PRIMARY KEY;
 ```
 
-<span style="color:red">注意：删除主键时，如果主键列具备自动增长能力，需要先去掉自动增长，然后在删除主键。</span>
+**注意：删除主键时，如果主键列具备自动增长能力，需要先去掉自动增长，然后在删除主键。**
 
 ### 添加外键约束(Foreign Key)
 
@@ -237,7 +237,7 @@ ALTER TABLE 表名 MODIFY 主键 类型 AUTO_INCREMENT;
 ALTER TABLE 表名 DROP PRIMARY KEY;
 ```
 
-<span style="color:red">注意：删除主键时，如果主键列具备自动增长能力，需要先去掉自动增长，然后在删除主键。</span>
+**注意：删除主键时，如果主键列具备自动增长能力，需要先去掉自动增长，然后在删除主键。**
 
 ### 添加外键约束(Foreign Key)
 
@@ -348,8 +348,7 @@ alter table emp3 add column job_id int default 0;
 
 插入数据时的默认值处理
 
-<span style="color:red">如果在插入数据时并未指定该列的值，那么MySQL会将默认值添加到该列中。如果是完全
-项插入需要使用default来占位。</span>
+**如果在插入数据时并未指定该列的值，那么MySQL会将默认值添加到该列中。如果是完全项插入需要使用default来占位。**
 
 ```sql
 1.insert into emp3 (name) values("admin");
@@ -406,9 +405,7 @@ TRUNCATE TABLE 表名;
 truncate table emp3;
 ```
 
-
-
-### <span style="color:red">清空表时DELETE与 TRUNCATE 区别</span>
+### 清空表时DELETE与 TRUNCATE 区别
 
 + truncate是整体删除(速度较快)，delete是逐条删除(速度较慢);
 
@@ -498,11 +495,10 @@ select employees_id,last_name,12*salary from employees;
 
 ###  MySQL中定义空值
 
-<span style="color:red">1.null不是0，也不是空格。</span>
-<span style="color:red">2.null是一个未分配的、未知的，或不适用的值。</span>
-<span style="color:red">3.如果一行中的某个列缺少数据值，该值被置为null，或者说包含一个空。</span>
-<span style="color:red">4.空是一个难以获得的、未分配的、未知的，或不适用的值。空和0或者空格不相同。</span>
-<span style="color:red">5.0是一个数字，而空格是一个字符。</span>
+**1.null不是0，也不是空格。**
+**2.null是一个未分配的、未知的，或不适用的值。**
+**3.如果一行中的某个列缺少数据值，该值被置为null，或者说包含一个空。**
+**4.空是一个难以获得的、未分配的、未知的，或不适用的值。空和0或者空格不相同。**
 
 ###  算术表达式中的空值
 
@@ -617,12 +613,9 @@ SELECT last_name FROM employees WHERE last_name LIKE "_e%";
 
 #### 4.使用NULL条件
 
-<span style="color:red">NULL条件，包括IS NULL条件和IS NOT NULL条件。</span>
+**NULL条件，包括IS NULL条件和IS NOT NULL条件。**
 
-<span style="color:red">IS NULL条件用于空值测试。空值的意思是难以获得的、未指定的、未知的或者不适用的。
-因此，你不能用=，因为null不能等于或不等于任何值。</span>
-
-示例一:
+**IS NULL条件用于空值测试。空值的意思是难以获得的、未指定的、未知的或者不适用的。因此，你不能用=，因为null不能等于或不等于任何值。**
 找出emloyees表中那些没有佣金的雇员雇员ID、名字与佣金。
 
 ```sql
@@ -681,7 +674,7 @@ select last_name from employees where last_name not 1ike %u%;
   + DESC：降序排序
 + ORDER BY子句在SELECT语句的最后。
 
-<span style="color:red">在一个不明确的查询结果中排序返回的行。ORDER BY子句用于排序。如果使用了ORDER BY子句，它必须位于SQL语句的最后。</span>
+**在一个不明确的查询结果中排序返回的行。ORDER BY子句用于排序。如果使用了ORDER BY子句，它必须位于SQL语句的最后。**
 
 
 SELECT语句的执行顺序如下：
@@ -743,7 +736,7 @@ select employee_id,last_name,12*salary annsal from employees order by annsal;
 + 格式化显示的日期和数字
 + 转换列数据类型
 
-<span style="color:red">SQL函数有输入参数，并且总有一个返回值。</span>
+**SQL函数有输入参数，并且总有一个返回值。**
 
 ### 函数分类
 
@@ -837,7 +830,7 @@ SELECT ROUND(45.923,2), ROUND(45.923,0),ROUND(45.923,-1);
 
 ##### TRUNCATE(column|expression,n)函数
 
-TRUNCATE函数的作用类似于ROUND函数。如果第二个参数是0或者缺少，值被截断为整数。如果第二个参数是2，值被截断为两位小数。如果第二个参数是-2，值被截断到小数点左边两位。<span style="color:red">与ROUND最大的区别是不会进行四舍五入。</span>
+TRUNCATE函数的作用类似于ROUND函数。如果第二个参数是0或者缺少，值被截断为整数。如果第二个参数是2，值被截断为两位小数。如果第二个参数是-2，值被截断到小数点左边两位。**与ROUND最大的区别是不会进行四舍五入。**
 
 ```sql
 SELECT TRUNCATE(45.923,2);
@@ -971,15 +964,15 @@ SELECT LAST_NAME,JOB_ID,SALARY,CASE JOB_ID WHEN "IT_PROG" THEN 1.10*SALARY WHEN 
 
 ## 8.多表查询
 
-<span style="color:red">笛卡尔乘积：当一个连接条件无效或被遗漏时，其结果是一个笛卡尔乘积(Cartesianproduct)，其中所有行的组合都被显示。第一个表中的所有行连接到第二个表中的所有行。一个笛卡尔乘积会产生大量的行，其结果没有什么用。你应该在WHERE子句中始终包含一个有效的连接条件，除非你有特殊的需求，需要从所有表中组合所有的行。</span>>
+**笛卡尔乘积：当一个连接条件无效或被遗漏时，其结果是一个笛卡尔乘积(Cartesianproduct)，其中所有行的组合都被显示。第一个表中的所有行连接到第二个表中的所有行。一个笛卡尔乘积会产生大量的行，其结果没有什么用。你应该在WHERE子句中始终包含一个有效的连接条件，除非你有特殊的需求，需要从所有表中组合所有的行。**
 
 ### 多表查询分类
 
 + sql92标准:
   + 内连接(等值连接、非等值连接、自连接)。
 + sql99标准:
-  + 内连接(等值连接、非等值连接、自连接)。
-  + 外连接(左外、右外、全外(MySQL不支持全外连接)、交叉连接。
+  + 内连接（等值连接、非等值连接、自连接）。
+  + 外连接（左外、右外、全外(MySQL不支持全外连接）、交叉连接。
 
 ### SQL92等值连接
 
@@ -1028,9 +1021,7 @@ SELECT LAST_NAME,JOB_ID,SALARY,CASE JOB_ID WHEN "IT_PROG" THEN 1.10*SALARY WHEN 
 
 ##### 多表连接
 
-<span style="color:red">为了连接n个表，最少需要n-1个连接条件。</span>>
-
-示例一：
+**为了连接n个表，最少需要n-1个连接条件。**
 查询雇员King所在的部门名称。
 
 ```sql
@@ -1040,11 +1031,11 @@ SELECT d.DEPARTMENT_NAME FROM departments d,employees e WHERE e.DEPARTMENT_ID=d.
 示例二：
 显示每个雇员的last name、departmentname 和city。
 
-```sql
+```#sql
 SELECT e.LAST_NAME,d.DEPARTMENT_NAME,l.CITY FROM employees e,departments d,locations l WHERE e.DEPARTMENT_ID = d.DEPARTMENT_ID AND d.LOCATION_ID = l.LOCATION_ID
 ```
 
-#### 非等值连接的使用
+### SQL92非等值连接的使用
 
 一个非等值连接是一种不同于等值操作的连接条件。EMPLOYEES表和JOB_GRADESA表之间的关系有一个非等值连接例子。在两个表之间的关系是EMPLOYEES表中的SALARY列必须是JOB_GRADES表的 LOWEST_SALARY 和HIGHEST_SALARY 列之间的值。使用不同于等于(=)的操作符获得关系。
 
@@ -1073,5 +1064,42 @@ INSERT INTO JOB_GRADES VALUES (8000,12000,"D");
 查询所有雇员的薪水级别。
 
 ```sql
+select e.last_name,j.grade_level from employees e ,job_grades j where e.salary between j.lowest_sal and j.highest_sal;
 ```
 
+### SQL92自连接
+
+连接一个表到它自己。有时需要连接一个表到它自己。为了找到每个雇员的经理的名字，则
+需要连接EMPLOYEES表到它自己，或执行一个自连接。
+
+示例一:
+查询每个雇员的经理的名字以及雇员的名字，雇员名字列别名为W，经理列别名为M。
+
+```sql
+SELECT worker.LAST_NAME AS w,manager.LAST_NAME AS m FROM employees worker,employees manager WHERE worker.MANAGER_ID = manager.EMPLOYEE_ID;
+```
+
+示例二:
+查询Fox的经理是谁?显示他的名字。
+
+```sql
+SELECT worker.LAST_NAME AS w,manager.LAST_NAME AS m FROM employees worker,employees manager WHERE worker.MANAGER_ID = manager.EMPLOYEE_ID AND worker.LAST_NAME = "fox";
+```
+
+### SQL99交叉乘积（笛卡尔乘积）
+
+示例:
+使用交叉连接查询employees表与departments表。
+
+```sql
+select * from employees cross join departments;
+```
+
+
+
+### SQL99自然连接
+
+**连接只能发生在两个表中有相同名字和数据类型的列上。如果列有相同的名字，但数据类型不同，NATURALJOIN语法会引起错误。**
+
+```sql
+```
