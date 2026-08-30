@@ -1086,7 +1086,7 @@ SELECT worker.LAST_NAME AS w,manager.LAST_NAME AS m FROM employees worker,employ
 SELECT worker.LAST_NAME AS w,manager.LAST_NAME AS m FROM employees worker,employees manager WHERE worker.MANAGER_ID = manager.EMPLOYEE_ID AND worker.LAST_NAME = "fox";
 ```
 
-### SQL99交叉乘积CROSSJOIN（笛卡尔乘积）
+### SQL99交叉乘积CROSS JOIN（笛卡尔乘积）
 
 示例：
 使用交叉连接查询employees表与departments表。
@@ -1097,7 +1097,7 @@ select * from employees cross join departments;
 
 
 
-### SQL99自然连接NATURALOIN
+### SQL99自然连接NATURAL JOIN
 
 **连接只能发生在两个表中有相同名字和数据类型的列上。如果列有相同的名字，但数据类型不同，NATURALJOIN语法会引起错误。**
 
@@ -1114,5 +1114,65 @@ SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e NATURAL JOIN departments d
 SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e,departments d WHERE e.DEPARTMENT_ID=d.DEPARTMENT_ID;
 ```
 
-### SQL99内连接INNERJOIN
+### SQL99内连接INNER JOIN
 
+语法：
+
++ SELECT 查询列表;
++ FROM 表1别名;
++ INNERJOIN 连接表(INNER关键字可省略);
++ ON 连接条件;
+
+示例：
+查询雇员名字为Fox的雇员ID，薪水与部门名称。
+
+```sql
+SELECT e.LAST_NAME,e.EMPLOYEE_ID,e.SALARY,d.DEPARTMENT_NAME FROM employees e INNER JOIN departments d ON e.DEPARTMENT_ID = d.DEPARTMENT_ID WHERE e.LAST_NAME = "fox";
+```
+
+### 外连接查询OUTER JOIN
+
+#### 内与外连接
+
++ 在SQL:1999中，连接两个表，仅返回匹配的行的连接，称为内连接。
++ 在两个表之间的连接，返回内连接的结果，同时还返回不匹配行的左(或右)表的连接，称为左(或右)外连接。
++ 在两个表之间的连接，返回内连接的结果， 同时返回左和右连接，称为全外连接。
+
+**孤儿数据(Orphan Data)：孤儿数据是指被连接的列的值为空的数据。**
+
+#### 左外连接（LEFT OUTER JOIN）
+
+左边的表(EMPLOYEES)中即使没有与DEPARTMENTS表中匹配的行，该查询也会取回EMPLOYEES 表中所有的行。
+
+示例：
+查询所有雇员的名字以及他们的部门名称，包含那些没有部门的雇员。
+
+```sql
+SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e LEFT OUTER JOIN departments d ON e.DEPARTMENT_ID = d.DEPARTMENT_ID;
+```
+
+#### 右外连接（RIGHT OUTER JOIN）
+
+右边的表(DEPARTMENTS)中即使没有与EMPLOYEES表中匹配的行，该查询也会取回DEPARTMENTS表中所有的行。
+
+示例：
+查询所有雇员的名字以及他们的部门名称，包含那些没有雇员的部门。
+
+```sql
+SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e RIGHT OUTER JOIN departments d ON e.DEPARTMENT_ID = d.DEPARTMENT_ID;
+```
+
+### 全外连接
+
+**注意：MySQL中不支持FULL OUTERJOIN连接**
+可以使用union实现全外连接：
+
++ UNION：可以将两个查询结果集合并，返回的行都是唯一的，如同对整个结果集合使用了 DISTINCT。
++ UNIONALL：只是简单的将两个结果合并后就返回。这样，如果返回的两个结果集中有重复的数据，那么返回的结果集就会包含重复的数据了。
+
+示例：
+查询所有雇员的名字以及他们的部门名称，包含那些没有雇员的部门以及没有部门的雇员。
+
+```sql
+(SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e LEFT OUTER JOIN departments d ON e.DEPARTMENT_ID = d.DEPARTMENT_ID)UNION(SELECT e1.LAST_NAME,d1.DEPARTMENT_NAME FROM employees e1 RIGHT OUTER JOIN departments d1 ON e1.DEPARTMENT_ID = d1.DEPARTMENT_ID);
+```
