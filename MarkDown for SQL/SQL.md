@@ -1586,10 +1586,392 @@ create unique index emp_name_indexon emp(name);
 ALTER TABLE table_name ADD UNIQUE indexName (column(length));
 ```
 
+示例：
 
+修改emp表，为salary列添加唯一索引，索引名为emp_salary_index。
+
+```sql
+alter table emp add unique emp_salary_index(salary);
+```
+
+创建表时指定唯一索引
+
+```sql
+CREATE TABLE table (COLUMN TYPE PRIMARY KEY (id ),UNIQUE index_name (column(length));
+```
+
+示例：
+
+创建 emp5表，包含emp_id,name,address列，同时为name列创建唯一索引。索引名为 emp5_name_index.
+
+```sql
+create table emp5(emp_id int primary key ,name varchar(30),address varchar(30),unique emp5_name_index(name));
+```
 
 ### 主键索引
 
+主键索引是一种特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般是在建表的时候同时创建主键索引。
+
+修改表添加主键索引：
+
+```sql
+ADD PRIMARY KEY(列名);ALTERTABLE
+```
+
+示例：
+
+修改emp表为employee_id添加主键索引。
+
+```sql
+alter table emp add primary key (employee_id);
+```
+
+创建表时添加主键索引：
+
+```sql
+CREATE TABLE table (COLUMN TYPE,PRIMARY KEY(column);
+```
+
+示例：
+
+创建 emp6表，包含emp_id,name,address列，同时为emp_id列创建主键索引。
+
+```sql
+create table emp6(employee_id int primary key auto_increment,name varchar(20),address varchar(50));
+```
+
 ### 组合索引
 
+组合索引是指使用多个字段创建的索引，只有在查询条件中使用了创建索引时的第一个字段，索引才会被使用（最左前缀原则）。
+
+**最左前缀原则：就是最左优先。如：我们使用表中的name，address，salary创建组合索引，那么想要组合索引生效，我们只能使用如下组合:
+name/address/salary、name/address、name/，如果使用addrees/salary或者是 salary则索引不会生效。**
+
+添加组合索引：
+
+```sql
+ALTER TABLE table_name ADD INDEX index_name(column(length),column(length));
+```
+
+示例：
+
+修改emp6表，为name，address列创建组合索引。
+
+```sql
+alter table emp6 add index emp6_index_n_a(name,address);
+```
+
+创建表时创建组合索引：
+
+```sql
+CREATETABLE
+table(
+COLUMN TYPE
+INDEX index_name (column (length), column (length))
+D;
+```
+
+示例：
+
+```sql
+create table emp7(emp_id int primary key auto_increment,name varchar(20),address varchar(30),index emp7_index_name_add_index(name,address));
+```
+
 ## 12.事务
+
+### 事务简介
+
+**事务是指作为单个逻辑工作单元执行的一系列操作，要么完全地执行，要么完全地不执行。**
+事务定义(Transaction)：
+
++ 事务是一个最小的不可再分的工作单元;通常一个事务对应一个完整的业务（例如银行账户转账业务，该业务就是一个最小的工作单元）。
++ 一个完整的业务需要批量的DML(insert、update、delete)语句共同联合完成。
++ 事务只和DML语句有关，或者说DML语句才有事务。这个和业务逻辑有关，业务逻辑不同，DML语句的个数不同。
+
+事务四大特征（ACID）：
+
++ 原子性（ATOMICITY）：事务中的操作要么都不做，要么就全做。
++ 一致性（CONSISTENCY）：一个事务应该保护所有定义在数据上的不变的属性（例如完整性约束）。在完成了一个成功的事务时，数据应处于一致的状态。
++ 隔离性（ISOLATION）：一个事务的执行不能被其他事务干扰。
++ 持久性（DURABILITY）：一个事务一旦提交，它对数据库中数据的改变就应该是永久性的。
+
+事务的类型：
+
++ 显式事务：需要我们手动的提交或回滚。DML语言中的所有操作都是显示事务操作。
++ 隐式事务：数据库自动提交不需要我们做任何处理，同时也不具备回滚性。DDL、DCL语言都是隐式事务操作。
+
+### 使用事务
+
+|      TCL语句      |   描述   |
+| :---------------: | :------: |
+| start transaction | 事务开启 |
+|      commit       | 事务提交 |
+|     rollback      | 事务回滚 |
+
+示例一：
+
+创建account账户表，包含id、卡号、用户名、余额。
+
+```sql
+create table account(id int primary key auto_increment,cardnum varchar(20) not null,username varchar(30) not null,balance double(10,2));
+```
+
+示例二：
+
+向account表中插入两条数据。
+
+```sql
+insert into account(cardnum,username,balance) VALUES('123456789','张三',2000);
+insert into account(cardnum,username,balance) VALUES('987654321','李四',2000);
+```
+
+示例三：
+
+在一个事务中完成转账业务。
+
+```sql
+START TRANSACTION 
+update account set balance = balance-200 where cardnum '123456789';
+update account set balance = balance+200 where cardnum'987654321';
+select * from account;
+--当我们关闭数据库重新打开后，张三和李四的账户余额并没发生任何变化。
+--这是因为当我们使用"START TRANSACTION"开启一个事务后，该事务的提交方式不再是自动的，而在这里，我们并没有使用事务提交语句COMMIT，所以对account表
+数据的修改并没有永久的保存到数据库中，也就是说我们的转账事务并没有执行成功.
+--提交转账事务
+commit;
+--事务的回滚让数据库恢复到了执行事务操作前的状态。
+--需要注意的是事务的回滚必须在事务提交之前，因为事务一旦提交就不能再进行
+rollback;
+```
+
+
+
+### 事务的并发问题
+
+#### 脏读（读取未提交数据）
+
+**指一个事务读取了另外一个事务未提交的数据。**
+
+A事务读取B事务尚未提交的数据，此时如果B事务发生错误并执行回滚操作，那么A事务读取到的数据就是脏数据。
+
+| 事件顺序 | 转账事务 | 取款事务 |
+| :------: | :------: | :------: |
+| 1        |          | 开始事务 |
+| 2        | 开始事务 |          |
+| 3        |          | 查询账户余额为2000元 |
+| 4        |          | 取款1000元，余额被更改为1000元 |
+| 5        | 查询账户余额为1000元（产生脏读） |          |
+| 6        |          | 取款操作发生未知错误，事务回滚，余额变更为2000元 |
+| 7        | 转入2000元，余额被更改为3000元（脏读的1000+2000） |          |
+| 8        | 提交事务 |          |
+| 备注     | 按照正确逻辑，此时账户余额应该为4000元 ||
+
+#### 不可重复读（前后多次读取，数据内容不一致）
+
+**在一个事务内读取表中的某一行数据，多次读取结果不同。**
+事务A在执行读取操作，由整个事务A比较大，前后读取同一条数据需要经历很长的时间而在事务A第一次读取数据，比如此时读取了小明的年龄为20岁，事务B执行更改操作，将小明的年龄更改为30岁，此时事务A第二次读取到小明的年龄时，发现其年龄是30岁，和之前的数据不一样了，也就是数据不重复了，系统不可以读取到重复的数据，成为不可重复读。
+
+| 时间顺序 |                      事务A                      |        事务B         |
+| :------: | :---------------------------------------------: | :------------------: |
+|    1     |                    开始事务                     |                      |
+|    2     |          第一次查询，小明的年龄为20岁           |                      |
+|    3     |                                                 |       开始事务       |
+|    4     |                    其他操作                     |                      |
+|    5     |                                                 | 更改小明的年龄为30岁 |
+|    6     |                                                 |       提交事务       |
+|    7     |          第二次查询，小明的年龄为30岁           |                      |
+|   备注   | 按照正常逻辑，事务A前后两次读取到的数据应该一致 |                      |
+
+#### 幻读（前后多次读取，数据总量不一致）
+
+**是指在一个事务内读取到了别的事务插入的数据，导致前后读取数量总量不一致。**
+
+事务A在执行读取操作，需要两次统计数据的总量，前一次查询数据总量后，此时事务B执行了新增数据的操作并提交后，这个时候事务A读取的数据总量和之前统计的不一样，就像产生了幻觉一样，平白无故的多了几条数据，成为幻读。
+
+| 时间顺序 |                        事务A                        |     事务B     |
+| :------: | :-------------------------------------------------: | :-----------: |
+|    1     |                      开始事务                       |               |
+|    2     |             第一次查询，数据总量为100条             |               |
+|    3     |                                                     |   开始事务    |
+|    4     |                      其他操作                       |               |
+|    5     |                                                     | 新增100条数据 |
+|    6     |                                                     |   提交事务    |
+|    7     |             第二次查询，数据总量为200条             |               |
+|   备注   | 按照正确逻辑，事务A前后两次读取到的数据总量应该一致 |               |
+
+#### 事务的隔离级别
+
+事务的隔离级别用于决定如何控制并发用户读写数据的操作。数据库是允许多用户并发访问的，如果多个用户同时开启事务并对同一数据进行读写操作的话，有可能会出现脏读、不可重复读和幻读问题，所以MySQL中提供了四种隔离级别来解决上述问题。
+
+事务的隔离级别从低到高依次为：
+
++ READ UNCOMMITTED
++ READ COMMITTED
++ REPEATABLE READ
++ SERIALIZABLE
+
+隔离级别越低，越能支持高并发的数据库操作。
+
+| 隔离级别/读异常  |         脏读         | 不可重复读 | 幻读 |
+| :--------------: | :------------------: | :--------: | :--: |
+|   SERIALIZABLE   |          Y           |     Y      |  Y   |
+| REPEATABLE READ  |          Y           |     Y      |  N   |
+|  READ COMMITTED  |          Y           |     N      |  N   |
+| READ UNCOMMITTED |          N           |     N      |  N   |
+|       提示       | Y表示解决N表示未解决 |            |      |
+
+查看MySQL默认事务隔离级别
+
+```sql
+SELECT @@transaction_isolation;
+```
+
+设置事务隔离级别
+对当前session有效。
+
+```sql
+set session transaction isolation level read uncommitted;
+set session transaction isolation read committed;
+set session transaction isolation level repeatable read;
+set session transaction isolation level serializable;
+```
+
+
+
+## 13.MySQL用户管理
+
+MySQL是一个多用户的数据库系统，按权限，用户可以分为两种:root用户，超级管理员和由root用户创建的普通用户。
+
+### 用户管理
+
+创建用户：
+
+```sql
+CREATE USER uSername IDENTIFIED BY 'password';
+```
+
+查看用户：
+
+```sql
+SELECT USER,HOST FROM mysql.user;
+```
+
+示例：
+
+创建一个u_sxt的用户，并查看创建是否成功。
+
+```sql
+create user u_sxt IDENTIFIED by 'sxt';
+select user,host from mysql.user;
+```
+
+### 权限管理
+
+新用户创建完后是无法登陆的，需要分配权限。
+GRANT 权限 ON 数据库.表 TO 用户名 @登录主机 IDENTIFIED BY "密码"
+
+#### 登录主机
+
+|   字段    |                        含义                         |
+| :-------: | :-------------------------------------------------: |
+|     %     |                    匹配所有主机                     |
+| localhost | localhost不会被解析成IP地址，直接通过UNIXsocket连接 |
+| 127.0.0.1 |      会通过TCP/IP协议连接，并且只能在本机访问       |
+|    ::1    |    ::1就是兼容支持ipv6的，表示同ipv4的127.0.0.1     |
+
+#### 权限列表
+
+|       权限       |     作用范围     |   作用   |
+| :--------------: | :--------------: | :------: |
+| all [privileges] |      服务器      | 所有权限 |
+|      select      |      表、列      |  选择行  |
+|      insert      |      表、列      |  插入行  |
+|      update      |      表、列      |  更新行  |
+|      delete      |        表        |  删除行  |
+|      create      | 数据库、表、索引 |   创建   |
+|       drop       | 数据库、表、视图 |   删除   |
+
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'username' @'localhost' IDENTIFIED BY 'password';
+```
+
+示例：
+
+为u_sxt用户分配只能查询bjsxt库中的employees表，并且只能在本机登陆的权限。
+
+```sql
+grant select ON bjsxt.emp to 'u_sxt' @'localhost' IDENTIFIED by 'sxt';
+```
+
+#### 刷新权限
+
+每当调整权限后，通常需要执行以下语句刷新权限。
+
+```sql
+FLUSH PRIVILEGES;
+```
+
+#### 删除用户
+
+```sql
+DROP USER username @localhost;
+```
+
+###  使用Navicat管理用户
+
+#### 创建用户
+
+1.打开Navicat
+
+2.点击“用户”
+
+3.点击“新建用户”，设置用户名、密码、主机、密码过期策略
+
+4.分配新建用户权限
+
+###  使用Navicat导入导出数据
+
+#### 数据的导入导出
+
+导入sql脚本文件：右键点击选择需要导出的库表，选择转储sql文件。
+
+导出数据文件：右键点击选择需要导出的库表，选择导出向导，选择导出的文件类型。
+
+导入数据文件：右键点击需要导入的库，选择运行sql文件/打开外部sql文件，复制sql语句粘贴至新建查询。
+
+## 14.MySQL分页查询
+
+### MySQL分页查询原则
+
++ 在MySQL数据库中使用LIMIT子句进行分页查询。
++ MySQL分页中开始位置为0。
++ 分页子句在查询语句的最后侧。
+
+### LIMIT子句
+
+```sql
+SELECT 投影列 FROM 表名 WHERE 条件 ORDER BY LIMIT 开始位置，查询数量;
+```
+
+示例：
+
+查询雇员表中所有数据按id排序，实现分页查询，每次返回两条结果。
+
+```sql
+select * from employees order by employees_id limit 0,2;
+```
+
+### LIMIT OFFSET子句
+
+```sql
+SELECT 投影列 FROM 表名 WHERE 条件 ORDER BY LIMIT 查询数量 OFFSET 开始位置;
+```
+
+示例：
+
+查询雇员表中所有数据按id排序，使用LIMIT OFFSET实现分页查询，每次返回两条结果。
+
+```sql
+select * from employees order by employees_id limit 2 offset 4;
+```
+
