@@ -1133,7 +1133,6 @@ SELECT e.LAST_NAME,e.EMPLOYEE_ID,e.SALARY,d.DEPARTMENT_NAME FROM employees e INN
 ### 外连接查询OUTER JOIN
 
 #### 内与外连接
-
 + 在SQL:1999中，连接两个表，仅返回匹配的行的连接，称为内连接。
 + 在两个表之间的连接，返回内连接的结果，同时还返回不匹配行的左(或右)表的连接，称为左(或右)外连接。
 + 在两个表之间的连接，返回内连接的结果， 同时返回左和右连接，称为全外连接。
@@ -1165,6 +1164,7 @@ SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e RIGHT OUTER JOIN departmen
 ### 全外连接
 
 **注意：MySQL中不支持FULL OUTERJOIN连接**
+
 可以使用union实现全外连接：
 
 + UNION：可以将两个查询结果集合并，返回的行都是唯一的，如同对整个结果集合使用了 DISTINCT。
@@ -1176,3 +1176,420 @@ SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e RIGHT OUTER JOIN departmen
 ```sql
 (SELECT e.LAST_NAME,d.DEPARTMENT_NAME FROM employees e LEFT OUTER JOIN departments d ON e.DEPARTMENT_ID = d.DEPARTMENT_ID)UNION(SELECT e1.LAST_NAME,d1.DEPARTMENT_NAME FROM employees e1 RIGHT OUTER JOIN departments d1 ON e1.DEPARTMENT_ID = d1.DEPARTMENT_ID);
 ```
+
+## 9.聚合函数
+
+### 聚合函数介绍
+
+聚合函数也称之为多行函数，组函数或分组函数。聚合函数不像单行函数，聚合函数对行的分组进行操作，对每组给出一个结果。如果在查询中没有指定分组，那么聚合函数则将查询到的结果集视为一组。
+
+### 聚合函数类型
+
++ AVG函数：求平均值；
++ SUM函数：求和；
++ MIN函数：求最小值；
++ MAX函数：求最大值；
++ COUNT函数：计数；
+
+### 聚合函数说明
+
+| 函数名            | 描述                                                | 实例                                                         |
+| :---------------- | --------------------------------------------------- | :----------------------------------------------------------- |
+| AVG(expression)   | 返回一个表达式的平均值，expression是一个字段        | 返回Products表中Price字段的平均值：SELECT AVG(Price) AS AveragePrice FROM Products; |
+| COUNT(expression) | 返回查询的记录总数，expression参数是一个字段或者*号 | 返回 Products表中 products字段总共有多少条记录：SELECT COUNT(ProductID) AS NumberOfProductsFROM Products; |
+| MAX(expression)   | 返回字段expression中的最大值                        | 返回数据表Products中字段 Price的最大值：SELECT MAX(Price) AS LargestPrice FROM Products; |
+| MIN(expression)   | 返回字段expression中的最小值                        | 返回数据表Products中字段 Price的最小值：SELECT MIN(Price) AS LargestPrice FROM Products; |
+| SUM(expression)   | 返回指定字段的总和                                  | 计算OrderDetails表中字段Quantity 的总和：SELECT SUM(Quantity) AS TotalltemsOrdered FROM OrderDetails; |
+
+### 使用聚合函数的原则
+
++ DISTINCT使得函数只考虑不重复的值;
++ 所有聚合函数忽略空值。为了用一个值代替空值，用IFNULL或COALESCE函数。
+
+### AVG函数与SUM函数
+
+#### AVG(arg)函数
+
++ 对分组数据做平均值运算。
++ arg：参数类型只能是数字类型。
+
+#### SUM(arg)函数
+
++ 对分组数据求和。
++ arg：参数类型只能是数字类型。
+
+示例：
+计算员工表中工作编号含有REP的工作岗位的平均薪水与薪水总和。
+
+```sql
+SELECT AVG(SALARY),SUM(SALARY) FROM employees WHERE JOB_ID LIKE "%REP%";
+```
+
+### MIN函数与MAX函数
+
+#### MIN函数
+
++ 求分组中最小数据。
++ arg：参数类型可以是字符、数字、日期。
+
+#### MAX函数
+
++ 求分组中最大数据。
++ arg：参数类型可以是字符、数字、日期。
+
+示例：
+查询员工表中入职时间最短与最长的员工，并显示他们的入职时间。
+
+```sql
+SELECT MIN(HIRE_DATE),MAX(HIRE_DATE) FROM employees;
+```
+
+### COUNT函数
+
+返回分组中的总行数
+
+#### COUNT函数的三种格式
+
++ COUNT(*)：返回表中满足SELECT语句的所有列的行数，包括重复行，包括有空值列的行。
++ COUNT(expr)：返回在列中的由expr指定的非空值的数。
++ COUNT(DISTINCTexpr):返回在列中的由expr指定的唯一的非空值的数。
+
+#### 使用DISTINCT
+
++ COUNT(DISTINCT expr)返回对于表达式expr非空并且值不相同的行数。
++ 显示EMPLOYEES表中不同部门数的值。
+
+示例一：
+显示员工表中部门编号是80中有佣金的雇员人数。
+
+```sql
+SELECT COUNT(COMMISSION_PCT) FROM employees WHERE DEPARTMENT_ID=80;
+```
+
+示例二：
+
+```sql
+SELECT COUNT(DISTINCT DEPARTMENT_ID) FROM employees;
+```
+
+#### 组函数和NULL值
+在组函数中使用IFNULL函数：
+
+```sql
+SELECT avg(IFNULL( e.COMMISSION_PCT,0)) FROM employees e;
+```
+
+### 数据分组(GROUP BY)
+
+#### 创建数据分组
+
+在没有进行数据分组之前，所有聚合函数是将结果集作为一个大的信息组进行处理。但是，有时，则需要将表的信息划分为较小的组，这时候可以用GROUPBY子句实现。
+
+#### 原则
+
++ 使用WHERE子句，可以在划分行成组以前过滤行。
++ 如果有WHERE子句，那么GROUPBY子句必须在WHERE的子句后面。
++ 在GROUPBY子句中必须包含列。
+
+#### GROUP BY子句
+
+下面是包含一个GROUP BY子句SELECT语句的求值过程：
+
++ SELECT子句指定要返回的列
++ 在EMPLOYEES表中的部门号
+  + -GROUP BY子句中指定分组的所有薪水的平均值
+  + -FROM子句指定数据库必须访问的表：EMPLOYEES表。
++ WHERE子句指定被返回的行。因为无WHERE子句默认情况下所有行被返回。
++ GROUPBY子句指定行怎样被分组。行用部门号分组，所以AVG函数被应用于薪水列，以计算每个部门的平均薪水。
+
+示例：
+
+计算每个部门的员工总数。
+
+```sql
+SELECT e.DEPARTMENT_ID,COUNT(*) FROM employees e GROUP BY DEPARTMENT_ID;
+```
+
+### 在多列上使用分组
+
+#### 在组中分组
+可以列出多个GROUP BY列返回组和子组的摘要结果。可以用GROUP BY子句中的列的顺序确定结果的默认排序顺序。下面是图片中的SELECT语句中包含一个GROUPBY子句时的求值过程：
+
++ SELECT子句指定被返回的列：
+
+  + -部门号在EMPLOYEES表中。
+
+  + -Job ID 在 EMPLOYEES 表中。
+
+  + -在GROUPBY子句中指定的组中所有薪水的合计。
+
++ FROM子句指定数据库必须访问的表：EMPLOYEES表。
+
++ GROUP BY子句指定你怎样分组行：
+
+  + 首先，用部门号分组行。
+  + 第二，在部门号的分组中再用job ID分组行。
+
+如此 SUM函数被用于每个部门号分组中的所有jobID的salary列。
+
+示例：
+
+计算每个部门的不同工作岗位的员工总数。
+
+```sql
+SELECT e.DEPARTMENT_ID,e.JOB_ID, count(e.EMPLOYEE_ID) FROM employees e GROUP BY DEPARTMENT_ID,JOB_ID
+```
+
+### 约束分组结果
+
+#### HAVING子句
+
+HAVING子句是对查询出结果集分组后的结果进行过滤。
+
+#### 约束分组结果
+
+用WHERE子句约束选择的行，用HAVING子句约束组。为了找到每个部门中的最高薪水，而且只显示最高薪水大于$10,000的那些部门，可以像下面这样做：
+
+1.用部门号分组，在每个部门中找最大薪水。
+
+2.返回那些有最高薪水大于$10,000的雇员的部门。
+
+```sql
+SELECT department_id, MAX(salary) FROM employees GROUP BY department_id HAVING MAX(salary)>10000;
+```
+
+示例：
+
+显示那些合计薪水超过13,000的每个工作岗位的合计薪水。排除那些jOB_ID中含有REP的工作岗位，并且用合计月薪排序列表
+
+```sql
+SELECT SUM(SALARY) FROM employees e WHERE e.JOB_ID NOT LIKE "%REP%" GROUP BY JOB_ID HAVING SUM(SALARY)>13000 ORDER BY COUNT(SALARY);
+```
+
+## 10.子查询
+
+### 子查询介绍
+
+子查询是一个SELECT语句，它是嵌在另一个SELECT语句中的子句。使用子查询可以用简单的语句构建功能强大的语句。
+可以将子查询放在许多的SQL子句中，包括：
+
++ WHERE子句
++ HAVING子句
++ FROM子句
+  
+### 用子查询解决问题
+
+**假如要写一个查询来找出挣钱比Abel的薪水还多的人。为了解决这个问题，需要两个查询：一个找出Abel的收入，第二个查询找出收入高于Abel的人。可以用组合两个查询的方法解决这个问题。内查询或子查询返回一个值给外查询或主查询。使用一个子查询相当于执行两个连续查询并且用第一个查询的结果作为第二个查询的搜索值。**
+
+### 使用子查询的原则
+
++ 将子查询放在圆括号中。
++ 将子查询放在比较条件的右边。
++ 在单行子查询中用单行运算符，在多行子查询中用多行运算符。
+示例：
+
+查询与Fox同一部门的同事，并显示他们的名字与部门ID。
+
+```sql
+SELECT e.LAST_NAME,e.DEPARTMENT_ID FROM employees e WHERE e.DEPARTMENT_ID = (SELECT ee.DEPARTMENT_ID FROM employees ee WHERE ee.LAST_NAME = "Fox");
+```
+
+### 单行子查询
+
+单行子查询是从内查询返回一行的查询。在该子查询类型中用一个单行操作符。
+示例：
+
+查询Fox的同事，但是不包含他自己。
+
+```sql
+SELECT e.LAST_NAME,e.DEPARTMENT_ID FROM employees e WHERE e.DEPARTMENT_ID = (SELECT ee.DEPARTMENT_ID FROM employees ee WHERE ee.LAST_NAME = "Fox") AND e.LAST_NAME != "Fox";
+```
+
+### 多行子查询
+
+**子查询返回多行被称为多行子查询。对多行子查询要使用多行运算符而不是单行运算符**
+
+| 操作 |          含义          |
+| :--: | :--------------------: |
+|  IN  |  等于列表中的任何成员  |
+| ANY  | 比较子查询返回的每个值 |
+| ALL  | 比较子查询返回的全部值 |
+
+#### ANY运算符
+
+ANY运算符比较一个值与一个子查询返回的每一个值。
+
++ 小于ANY意思是小于最大值。
++ 大于ANY意思是大于最小值。
++ 等于ANY等同于IN。
+
+#### ALL运算符
+
+ALL运算符比较一个值与子查询返回的每个值。
+
++ 小于ALL意思是小于最小值。
++ 大于ALL意思是大于最大值。
+
+**NOT运算符可以与IN运算符一起使用。**
+
+### 子查询中的空值
+
+内查询返回的值含有空值，并因此整个查询无返回行，原因是用大于、小于或不等于比较Null值，都返回null。所以，只要空值可能是子查询结果集的一部分，就不能用NOTIN运算符。NOTIN运算符相当于<>ALL。注意，空值作为一个子查询结果集的一部分，如果使用IN操作符的话，不是一个问题。IN操作符相当=ANY。
+
+示例：
+查找各部门收入为部门最低的那些雇员。显示他们的名字，薪水以及部门ID。
+
+```sql
+SELECT e.LAST_NAME, e.SALARY, e.DEPARTMENT_ID FROM employees e WHERE e.SALARY = (SELECT MIN(SALARY) FROM employees WHERE DEPARTMENT_ID = e.DEPARTMENT_ID) ORDER BY e.DEPARTMENT_ID;
+```
+
+##  11.索引
+
+### 索引介绍
+
+索引是对数据库表中的一列或多列值进行排序的一种结构，使用索引可以快速访问数据库表中的特定信息。索引是一种特殊的文件，它们包含着对数据表里所有记录的位置信息。更通俗的说，数据库索引好比是一本书前面的目录，能加快数据库的查询速度。MySQL索引的建立对于MySQL的高效运行是很重要的，索引可以大大提高MySQL的检索速度。
+
+1.索引的作用
+
+索引相当于图书上的目录，可以根据目录上的页码快速找到所需的内容，提高性能（查询速度）。
+
+2.索引的优点
+
++ 通过创建唯一性索引，可以保证数据库表中的每一行数据的唯一性;
++ 可以加快数据的检索速度;
++ 可以加速表与表之间的连接;
++ 在使用分组和排序进行检索的时候，可以减少查询中分组和排序的时间;
+
+3.索引的缺点
+
++ 创建索引和维护索引要耗费时间，这种时间随着数据量的增加而增加;
++ 索引需要占用物理空间，数据量越大，占用空间越大;
++ 会降低表的增删改的效率，因为每次增删改索引都需要进行动态维护;
+
+4.什么时候需要创建索引
+
++ 频繁作为查询条件的字段应该创建索引;
++ 查询中排序的字段创建索引将大大提高排序的速度（索引就是排序加快速查找）;
++ 查询中统计或者分组的字段;
+
+5.什么时候不需要创建索引
+
++ 频繁更新的字段不适合创建索引，因为每次更新不单单是更新记录，还会更新索引，保存索引文件;
++ where条件里用不到的字段，不创建索引;
++ 表记录太少，不需要创建索引;
++ 经常增删改的表；
++ 数据重复且分布平均的字段，因此为经常查询的和经常排序的字段建立索引。注意某些数据包含大量重复数据，因此他建立索引就没有太大的效果，例如性别字段，只有男女，不适合建立索引;
+
+###  MySQL中的索引类型
+
+1.普通索引：最基本的索引，它没有任何限制。
+
+2.唯一索引：索引例的值必须唯一，但允许有空值，如果是组合索引，则列值的组合必须唯一。
+
+3.主键索引：
+
+4.特殊的索引：唯一的标识一条记录，不能为空，一般用primarykey来约束。
+
+5.联合索引：在多个字段上建立索引，能够加速查询到速度。
+
+### 普通索引
+
+是最基本的索引，它没有任何限制。在创建索引时，可以指定索引长度。length为可选参数，表示索引的长度，只有字符串类型的字段才能指定索引长度，如果是BLOB和TEXT类型，必须指定length。
+
+>创建索引时需要注意：
+>
+>如果指定单列索引长度，length必须小于这个字段所允许的最大字符个数。
+
+查询索引
+
+```sql
+show index FROM employees;
+```
+
+直接创建索引
+
+```sql
+CREATE INDEX index_name ON TABLE(COLUMN(length));
+```
+
+示例：
+
+为emp3表中的name创建一个索引，索引名为emp3_name_index;
+
+```sql
+CREATE INDEX emp3_name_index ON employees(name);
+```
+
+修改表添加索引
+
+```sql
+ALTER TABLE table_name ADD INDEX index_name(column(length));
+```
+
+示例：
+
+修改emp3表，为addrees 列添加索引，索引名为emp3_address_index;
+
+```sql
+alter table emp3 add index emp3_address_index(address);
+```
+
+创建表时指定索引列
+
+```sql
+CREATE TABLE table(COLUMN TYPE PRIMARY KEY (id ),INDEX index_name (column(length));
+```
+
+示例：
+
+创建emp4表，包含emp_id,name,address 列，同时为name 列创建索引，索引名为emp4_name_index.
+
+```sql
+create table emp4(emp_id int primary key auto_increment,name varchar(30),address varchar(50),index emp4_name_index(name));
+```
+
+删除索引：
+
+```sql
+DROP INDEX indexname ON tablename;
+```
+
+示例：
+
+删除 mep3表中索引名为emp3_address_index 的索引。
+
+```sql
+drop index emp3_address_index on emp3;
+```
+
+### 唯一索引
+
+唯一索引与普通索引类似，不同的就是：索引列的值必须唯一，但允许有空值。
+
+创建唯一索引
+
+```sql
+CREATE UNIQUE INDEX indexName ON table(column(length));
+```
+
+示例：
+
+为emp表中的name创建一个唯一索引，索引名为emp_name_index。
+
+```sql
+create unique index emp_name_indexon emp(name);
+```
+
+修改表添加唯一索引：
+
+```sql
+ALTER TABLE table_name ADD UNIQUE indexName (column(length));
+```
+
+
+
+### 主键索引
+
+### 组合索引
+
+## 12.事务
