@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    // 1. 目标版本使用现代的 ES2020，不会再报弃用警告
+    "target": "ES2020",
+    // 2. 模块系统为 ESNext，保持现代
+    "module": "Node16",
+    // 3. 解析策略显式声明为 Node，消除相关警告
+    "moduleResolution": "node16",
+    // 4. 路径映射，注意这里没有 baseUrl，直接写完整相对路径
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    // 5. 以下三个选项能改善模块导入的兼容性，避免一些莫名其妙的导入报错
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleDetection": "force"
+  },
+  // 告诉编辑器需要索引哪些文件
+  "include": ["src/**/*"],
+  // 排除不需要索引的文件夹，提高性能
+  "exclude": ["node_modules", "dist"]
+}

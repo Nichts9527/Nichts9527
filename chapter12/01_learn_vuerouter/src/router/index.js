@@ -16,24 +16,25 @@ const routes = [
     children: [
       // 在home页面下注册二级路由
       {
-        path:'',
-        redirect:"/home/message",//访问/home路径时，重定向到/home/message路径
+        path: '',
+        redirect: "/home/message",//访问/home路径时，重定向到/home/message路径
       },
       {
         path: "message",//二级路由不支持/message或/home/message,直接填message即可
-        component: () =>import("../pages/HomeMessage.vue")
+        component: () => import("../pages/HomeMessage.vue")
       },
       {
-        path:"shops",
-        component:()=>import("../pages/HomeShops.vue")
+        path: "shops",
+        component: () => import("../pages/HomeShops.vue")
       }
-    ]
+    ],
+    name:"home"
   },
   {
     path: "/about",
     name: "about", //指定该路由的名称为about
     component: () =>
-      import(/*webpackChunkName:"abput-chunk"*/ "../pages/HomePage.vue"),
+      import(/*webpackChunkName:"about-chunk"*/ "../pages/AboutPage.vue"),
     meta: {
       // 为该路由添加自定义数据
       name: "why",
@@ -49,6 +50,10 @@ const routes = [
     path: "/:patchMatch(.*)",//使用通配符*来匹配任意路径，通配符路由应放在最后
     component: () => import("../pages/NotFound.vue")
   },
+  {
+    path: '/login',
+    component: () => import("../pages/Login.vue")
+  }
 ];
 const router = createRouter({
   //导出创建好的路由对象
@@ -60,9 +65,29 @@ const router = createRouter({
 
 // 商品分类页面的路由配置
 const categoryRoute = {
-  path:"/category",
-  component:()=> import('../pages/Category.vue')
+  path: "/category",
+  component: () => import('../pages/Category.vue')
 }
 // 动态添加顶级路由对象
 router.addRoute(categoryRoute)
+
+// 为现有路由(home)增加二级路由
+router.addRoute("home", {
+  path: 'comment',
+  component: () => import("../pages/HomeComment.vue")
+})
+
+// 全局前置守卫
+router.beforeEach((to, from) => {
+  // 如果不是登录页面
+  if (to.path !== '/login') {
+    const token = window.sessionStorage.getItem("token")
+    // 通过判断用户是否登录，没登录则导航到/login页面
+    if (!token) {
+      return {
+        path: '/login'
+      }
+    }
+  }
+})
 export default router;

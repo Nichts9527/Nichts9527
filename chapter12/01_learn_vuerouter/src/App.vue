@@ -13,11 +13,11 @@
     <button @click="jumpToAbout">关于</button>
   </div>
   <!-- 路由组件的占位，为router-view添加v-slot指令 -->
-  <router-view v-slot="{ props }">
-    <transition name="why">
-      <component :is="props.Component"></component>
-    </transition>
-  </router-view>
+  <router-view v-slot="{ Component }">
+  <transition name="why">
+    <component :is="Component"></component>
+  </transition>
+</router-view>
 </template>
 <script>
 import { useRouter } from 'vue-router';
