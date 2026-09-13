@@ -14,7 +14,7 @@ export default {
         const store = useStore();
         const storeStateFns = mapState(["counter","name","age"])
         const storeState = {}
-        Object.keys(storeStateFns).forEach(elementfnKey => {
+        Object.keys(storeStateFns).forEach(fnKey => {
             const fn = storeStateFns[fnKey].bind({$store:store})//绑定this为{$store:store}
             storeState[fnKey] = computed(fn)//将普通函数转换为计算属性函数
         });
