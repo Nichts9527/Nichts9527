@@ -66,6 +66,24 @@ const store = createStore({
         [INCREMENT_N](state, payload) {
             state.counter += payload.num//修改counter的值
         }
+    },
+    // actions的基本使用
+    actions: {
+        incrementAction(context) {
+            // setTimeout模拟异步
+            setTimeout(() => {
+                context.commit('increment')//提交一个type为increment的mutation
+            })
+        },
+        decrementAction(context) {
+            // ES6解构context对象
+            let { commit, dispatch, state, rootState, getters, rootGetters } = context
+            commit('decrement')//提交一个type为decrement的mutation
+        },
+        // payload接收dispatch传递过来的参数
+        incrementNAction(context, payload) {
+            context.commit(INCREMENT_N, payload)//payload值为{num:10},提交给mutation
+        }
     }
 })
 export default store
