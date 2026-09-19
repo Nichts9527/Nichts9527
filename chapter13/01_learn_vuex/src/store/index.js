@@ -17,16 +17,6 @@ const store = createStore({
             uuid: null
         }
     },
-    //在mutations中修改全局状态
-    mutations: {
-        //定义increment函数，参数state是state()函数返回的对象
-        increment(state) {
-            state.counter++//修改全局的counter
-        },
-        decrement(state) {
-            state.counter--
-        }
-    },
     // getter的基本使用
     getters: {
         // 参数一：state对象，参数二：getters对象
