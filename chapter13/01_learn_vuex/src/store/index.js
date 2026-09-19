@@ -1,5 +1,7 @@
 import { createStore } from "vuex";
 import { INCREMENT_N } from "./mutation_types";
+import user from "./modules/user";
+import home from "./modules/home";
 const store = createStore({
     //定义全局共享状态
     state() {
@@ -96,6 +98,11 @@ const store = createStore({
                     })
             })
         }
+    },
+    // 引入home和user两个子模块
+    modules: {
+        home: home,//key指定模块的名称，value指定引入的模块
+        user//ES6简写语法，相当于user:user
     }
 })
 export default store
