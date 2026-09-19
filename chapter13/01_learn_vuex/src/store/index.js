@@ -13,7 +13,8 @@ const store = createStore({
                 { name: "React", count: 5, price: 20 },
                 { name: 'webpack', count: 4, price: 25 }
             ],
-            discount: 0.9//书籍打9折
+            discount: 0.9,//书籍打9折
+            uuid: null
         }
     },
     //在mutations中修改全局状态
@@ -65,6 +66,9 @@ const store = createStore({
         },
         [INCREMENT_N](state, payload) {
             state.counter += payload.num//修改counter的值
+        },
+        addUUID(state, payload) {
+            state.uuid = payload//存储网络获取的uuid
         }
     },
     // actions的基本使用
@@ -83,6 +87,24 @@ const store = createStore({
         // payload接收dispatch传递过来的参数
         incrementNAction(context, payload) {
             context.commit(INCREMENT_N, payload)//payload值为{num:10},提交给mutation
+        },
+        // 编写一个获取uuid的action
+        getUUIDAction({ commit }) {
+            // 直接返回promise对象，作为dispatch函数的返回值
+            return new Promise((resolve, reject) => {
+                // 发起网络请求，该URL是一个免费的uuid的接口
+                fetch('https://httpbin.org/uuid')
+                    // 将res解析为JSON格式的promise对象
+                    .then(res => res.json())
+                    .then((data) => {
+                        // 将请求获取的数据存到Vuex中
+                        commit("addUUID", data.uuid)
+                        // 调用resolve完成异步操作
+                        resolve(data)
+                    }).catch((err) => {
+                        reject(err)//错误处理
+                    })
+            })
         }
     }
 })
