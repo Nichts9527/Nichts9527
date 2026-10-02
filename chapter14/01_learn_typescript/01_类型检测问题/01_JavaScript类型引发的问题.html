@@ -1,0 +1,12 @@
+<script>
+    function getLength(str) {
+        return str.length;
+    }
+    console.log("1.正在执行的代码");
+    console.log("2.开始调用的函数");
+    getLength("abc");//正确的调用getLength函数
+    getLength();//错误的调用getLength函数，但是IDE并不会提示报错
+
+    // 当上面的代码报错后，后续所有的代码都无法继续正常执行
+    console.log("3.调用结束");
+</script>
