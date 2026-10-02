@@ -11,12 +11,17 @@ const homeModule = {
         doubleHomeCount(state) {
             return state.homeCounter * 2
         },
-        homeCounterAddRootCount(state, getter, rootState) {
+        // home模块:state、commit、dispatch；根模块:rootState、rootGetters
+        homeCountAddRootCount(state, getters, rootState, rootGetters) {
             return state.homeCounter + rootState.counter
         }
     },
     mutations: {
-        increment(state) {
+        // home模块:state、commit、dispatch；根模块:rootState、rootGetters
+        increment(state, commit, dispatch, getters, rootState, rootGetters) {
+            commit("increment")//提交当前模块的mutations
+            commit('increment',null,{root:true})//提交到根模块的mutations中
+            dispatch("incrementAction",null,{root:true})//分发到根模块的action中
             state.homeCounter++
         }
     },
