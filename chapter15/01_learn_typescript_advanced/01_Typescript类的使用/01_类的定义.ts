@@ -13,7 +13,7 @@ class Person {
         console.log(this.name + "eating");
     }
 };
-const p = new Person("why", 18)//新建一个类，传递name和age
+const p = new Person("why", 18);//新建一个类，传递name和age
 console.log(p.name, p.age);//访问对象的属性
 p.eating();
 export { }
