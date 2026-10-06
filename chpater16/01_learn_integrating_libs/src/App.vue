@@ -16,6 +16,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
+// 手动导入ElButton组件
+import 'element-plus/dist/index.css';//手动导入样式
+import { ElButton } from 'element-plus';
 // 导入自定义的IRootState类型
 import type { IRootState } from './store/index';
 import HelloWorld from './components/HelloWorld.vue';
@@ -41,7 +44,8 @@ export default defineComponent({
     };
   },
   components: {
-    HelloWorld
+    HelloWorld,
+    ElButton//局部注册ElButton组件
   }
 });
 </script>

@@ -4,7 +4,7 @@
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
-    "moduleResolution": "node10",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,8 +17,11 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
-    }, // 删除了 vuex 的映射
+      ],
+      "vuex": [
+        "./node_modules/vuex/types"
+      ] // 强行告诉 TS 去哪里找 Vuex 类型
+    },
     "lib": [
       "esnext",
       "dom",
