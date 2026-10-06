@@ -1,5 +1,5 @@
 {
-  "name": "06_typescript_declare",
+  "name": "01_learn_integrating_libs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,8 +8,9 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "lodash": "^4.18.1",
-    "vue": "^3.2.13"
+    "vue": "^3.2.13",
+    "vue-router": "^5.3.1",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
