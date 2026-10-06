@@ -7,6 +7,10 @@
   <div>当前计数：{{ store.state.counter }}</div>
   <button @click="increment">+1</button>
   <button @click="decrement">-1</button>
+  <!-- element-plus -->
+  <el-button>Default</el-button>
+  <el-button type="primary">Primary</el-button>
+  <el-button type="success">Success</el-button>
 </template>
 
 <script lang="ts">

@@ -4,37 +4,26 @@
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
-    "moduleResolution": "node",
-    "ignoreDeprecations": "6.0",
-    "skipLibCheck": true,
+    "moduleResolution": "node10",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
     "sourceMap": true,
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "element-plus/global"
     ],
     "paths": {
       "@/*": [
         "./src/*"
       ]
-    },
+    }, // 删除了 vuex 的映射
     "lib": [
       "esnext",
       "dom",
       "dom.iterable",
       "scripthost"
     ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }
