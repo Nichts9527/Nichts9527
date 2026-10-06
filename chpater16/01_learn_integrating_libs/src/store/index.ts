@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-// import type { Store } from 'vuex';//导入store类型
+import type { Store } from 'vuex';//导入store类型
 // 1.用interface定义一个对象类型
 export interface IRootState {
     counter: number
