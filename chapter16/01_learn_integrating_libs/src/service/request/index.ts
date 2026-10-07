@@ -56,6 +56,7 @@ class HYRequest<T = any> {
                 return err;
             }
         );
+        
     }
     // 编写request函数，request中的T用于指定响应结果res.data的类型
     request<T = any>(config: HYRequestConfig): Promise<T> {
