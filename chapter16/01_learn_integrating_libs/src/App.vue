@@ -14,6 +14,8 @@
 
   <!-- ECharts -->
   <echart-demo></echart-demo>
+
+  <!-- <echart-demo></echart-demo> -->
 </template>
 
 <script lang="ts">
