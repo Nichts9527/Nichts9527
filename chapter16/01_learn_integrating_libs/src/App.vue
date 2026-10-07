@@ -11,6 +11,9 @@
   <el-button>Default</el-button>
   <el-button type="primary">Primary</el-button>
   <el-button type="success">Success</el-button>
+
+  <!-- ECharts -->
+  <echart-demo></echart-demo>
 </template>
 
 <script lang="ts">
@@ -22,6 +25,7 @@ import { ElButton } from 'element-plus';
 // 导入自定义的IRootState类型
 import type { IRootState } from './store/index';
 import HelloWorld from './components/HelloWorld.vue';
+import echartDemo from './base-ui/echart-demo.vue';
 
 export default defineComponent({
   name: 'App',
@@ -45,7 +49,8 @@ export default defineComponent({
   },
   components: {
     HelloWorld,
-    ElButton//局部注册ElButton组件
+    ElButton,//局部注册ElButton组件
+    echartDemo
   }
 });
 </script>

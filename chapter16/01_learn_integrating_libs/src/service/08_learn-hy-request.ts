@@ -14,5 +14,6 @@ hyRequest.request<IResponseData>({
     method: "get"
 }).then((res) => {
     console.log(res.data);//Typescript会自动推导出res.data的类型为IResponseData
-
+}).catch((err) => {
+    console.error("请求发生错误：", err); // 添加 catch
 });
