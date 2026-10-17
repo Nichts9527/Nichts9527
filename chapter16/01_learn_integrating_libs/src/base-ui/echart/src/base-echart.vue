@@ -9,6 +9,7 @@
 import * as echarts from 'echarts';
 import { ref, onMounted, watchEffect } from 'vue';
 import type { EChartsOption } from 'echarts';
+import useEcharts  from '../hooks/useEcharts';
 
 interface BaseEchartProps {
     Width?: string;
