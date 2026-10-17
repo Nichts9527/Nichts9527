@@ -16,10 +16,11 @@
   <echart-demo></echart-demo>
 
   <!-- <echart-demo></echart-demo> -->
+  <base-echart :options="options"></base-echart>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 // 手动导入ElButton组件
 import 'element-plus/dist/index.css';//手动导入样式
@@ -28,6 +29,9 @@ import { ElButton } from 'element-plus';
 import type { IRootState } from './store/index';
 import HelloWorld from './components/HelloWorld.vue';
 import echartDemo from './base-ui/echart-demo.vue';
+
+import BaseEchart from './base-ui/base-echart.vue';
+import type { EChartsOption } from 'echarts';
 
 export default defineComponent({
   name: 'App',
@@ -43,17 +47,41 @@ export default defineComponent({
       store.commit('decrement');
     };
 
-    return {
-      store,
-      increment,
-      decrement
-    };
+    // echart图表的配置选项
+    const options = computed<EChartsOption>(() => { 
+      return {
+        title: {
+          text: 'ECharts 入门示例'
+        },
+        tooltip: {},
+        legend: {
+          data: ['销量']
+        },
+        xAxis: {
+          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+        },
+        yAxis: {},
+        series: [
+          {
+            name: '销量',
+          }
+        ]
+      }
+    });
+
+return {
+  store,
+  increment,
+  decrement,
+  options
+};
   },
-  components: {
-    HelloWorld,
+components: {
+  HelloWorld,
     ElButton,//局部注册ElButton组件
-    echartDemo
-  }
+    echartDemo,
+    BaseEchart
+}
 });
 </script>
 
